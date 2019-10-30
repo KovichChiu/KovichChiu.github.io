@@ -1,0 +1,26 @@
+I"�<p>試著用Command Line，畫出超美的分支圖吧！ <br />
+<!-- more --></p>
+<h1 id="分支圖畫法">分支圖畫法</h1>
+
+<ul>
+  <li>平常我在用command畫出很美的分支圖，通常會用 –graph –oneline</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$git</span> log <span class="nt">--graph</span> <span class="nt">--oneline</span>
+</code></pre></div></div>
+<p><img src="https://i.imgur.com/pfS0z1Q.png" alt="normal mode" /></p>
+
+<ul>
+  <li>經過排版後，可以挑選下面兩種，稍微研究後可以得出更多變化喔！</li>
+</ul>
+
+<h2 id="排版後第一種">排版後第一種</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$git</span> log <span class="nt">--graph</span> <span class="nt">--abbrev-commit</span> <span class="nt">--decorate</span> <span class="nt">--format</span><span class="o">=</span>format:<span class="s1">'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)'</span> <span class="nt">--all</span>
+</code></pre></div></div>
+<p><img src="https://imgur.com/XBkZGOs.png" alt="Beauty mode 1" /></p>
+<h2 id="排版後第二種">排版後第二種</h2>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>git log <span class="nt">--graph</span> <span class="nt">--abbrev-commit</span> <span class="nt">--decorate</span> <span class="nt">--format</span><span class="o">=</span>format:<span class="s1">'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n''%C(white)%s%C(reset) %C(dim white)- %an%C(reset)'</span> <span class="nt">--all</span>
+</code></pre></div></div>
+<p><img src="https://imgur.com/daua0Aj.png" alt="Beauty mode 2" /></p>
+:ET
