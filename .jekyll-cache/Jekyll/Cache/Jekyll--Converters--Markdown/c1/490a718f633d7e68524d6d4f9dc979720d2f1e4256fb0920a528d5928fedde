@@ -1,0 +1,137 @@
+I"�&<p>學習<code class="highlighter-rouge">Laravel</code>最大的困難就是安裝了吧，一開始也是安裝了老半天，那就來幫自己做個複習吧。 
+<!-- more --></p>
+
+<p>重點摘要:</p>
+<ul id="markdown-toc">
+  <li><a href="#安裝-laravel" id="markdown-toc-安裝-laravel">安裝 Laravel</a>    <ul>
+      <li><a href="#安裝" id="markdown-toc-安裝">安裝</a>        <ul>
+          <li><a href="#伺服器要求" id="markdown-toc-伺服器要求">伺服器要求</a></li>
+          <li><a href="#安裝-laravel-1" id="markdown-toc-安裝-laravel-1">安裝 Laravel</a>            <ul>
+              <li><a href="#透過-laravel-安裝器安裝" id="markdown-toc-透過-laravel-安裝器安裝">透過 Laravel 安裝器安裝</a></li>
+              <li><a href="#本機開發環境" id="markdown-toc-本機開發環境">本機開發環境</a></li>
+            </ul>
+          </li>
+          <li><a href="#配置" id="markdown-toc-配置">配置</a>            <ul>
+              <li><a href="#public-路徑" id="markdown-toc-public-路徑">public 路徑</a></li>
+              <li><a href="#config-文件" id="markdown-toc-config-文件">config 文件</a></li>
+              <li><a href="#目錄權限" id="markdown-toc-目錄權限">目錄權限</a></li>
+              <li><a href="#程式金鑰" id="markdown-toc-程式金鑰">程式金鑰</a></li>
+              <li><a href="#其他配置" id="markdown-toc-其他配置">其他配置</a></li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li><a href="#server配置" id="markdown-toc-server配置">Server配置</a>        <ul>
+          <li><a href="#目錄配置" id="markdown-toc-目錄配置">目錄配置</a></li>
+          <li><a href="#好看的網址" id="markdown-toc-好看的網址">好看的網址</a>            <ul>
+              <li><a href="#apache" id="markdown-toc-apache">Apache</a></li>
+              <li><a href="#nginx" id="markdown-toc-nginx">Nginx</a></li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h1 id="安裝-laravel">安裝 Laravel</h1>
+<h2 id="安裝">安裝</h2>
+<h3 id="伺服器要求">伺服器要求</h3>
+<p>Laravel 有一些對於server的要求，不過也有快捷又方便的方法 ─ <code class="highlighter-rouge">Laravel Homestead</code>，因此強烈堆建使用 <a href="#Homestead">Homestead</a> 作為開發環境。</p>
+
+<p>不過若不使用<code class="highlighter-rouge">Homestead</code>，Server需要滿足以下要求：</p>
+<ul>
+  <li>PHP &gt;= 7.2.0</li>
+  <li>BCMath PHP Extension</li>
+  <li>Ctype PHP Extension</li>
+  <li>JSON PHP Extension</li>
+  <li>Mbstring PHP Extension</li>
+  <li>OpenSSL PHP Extension</li>
+  <li>PDO PHP Extension</li>
+  <li>Tokenizer PHP Extension</li>
+  <li>XML PHP Extension</li>
+</ul>
+
+<h3 id="安裝-laravel-1">安裝 Laravel</h3>
+<p><code class="highlighter-rouge">Laravel</code>使用Composer來管理項目依賴，所以請確保已經安裝Composer。</p>
+<h4 id="透過-laravel-安裝器安裝">透過 Laravel 安裝器安裝</h4>
+<p>首先使用Composer進行Laravel安裝器的下載。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>composer global  require laravel/installer
+</code></pre></div></div>
+<p>請確定 <code class="highlighter-rouge">Composer's system-wide vendor</code> 目錄有存在於系統環境變量<code class="highlighter-rouge">$PATH</code>中，才能使系統找到Laravel的可執行檔案，依據系統的不同，有以下幾種配置。</p>
+
+<ul>
+  <li>macOS and GNU / Linux ：<code class="highlighter-rouge">$HOME/.config/composer/vendor/bin</code></li>
+  <li>Windows：<code class="highlighter-rouge">%USERPROFILE%\AppData\Roaming\Composer\vendor\bin</code>
+安裝完成後，<code class="highlighter-rouge">laravel new</code>指令會在你所在的目錄創建一個全新的Laravel專案。</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#laravel new [project name] 這邊以Blog為例。</span>
+laravel new Blog
+<span class="c">#若要直接在該目錄建立Laravel專案，請使用[./]。</span>
+laravel new ./
+<span class="c">#也可以使用Composer來製作專案，利用 composer create-project。</span>
+composer create-project <span class="nt">--prefer-dist</span> laravel/laravel Blog
+</code></pre></div></div>
+<h4 id="本機開發環境">本機開發環境</h4>
+<p>如果你在本機安裝了<code class="highlighter-rouge">php</code>，可以使用 php 的內置 server 來啟用 Laravel server。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#首先，cd 至 Laravel 專案中</span>
+php artisan serve <span class="c">#該命令會在[http://localhost:8000]開啟server</span>
+</code></pre></div></div>
+<p>不過，最好還是選擇<a href="#Homestead">Homestead</a>和<a href="#Valet">Valet</a>。</p>
+
+<h3 id="配置">配置</h3>
+
+<h4 id="public-路徑">public 路徑</h4>
+<p>安裝完成後，必須將web service的目錄指向<code class="highlighter-rouge">public/</code>目錄，該目錄底下的<code class="highlighter-rouge">index.php</code>為系統進入點以及回應所有HTTP請求的前端控制器。</p>
+
+<h4 id="config-文件">config 文件</h4>
+<p>Laravel 框架的所有config文件都存放在 <code class="highlighter-rouge">config/</code> 目錄，每個選項都有文字敘述，可以查看文件來熟悉對你有用的選項。</p>
+
+<h4 id="目錄權限">目錄權限</h4>
+<p>安裝 Laravel 後，你可能會遇到權限問題，<code class="highlighter-rouge">storage/</code> 和 <code class="highlighter-rouge">bootstrap/cache</code> 目錄在 web service 下應該是可寫的權限，否則 Laravel 無法執行，如果你用的是 <a href="#Homestead">Homestead</a> 虛擬機，這些權限應該已經設置好了。</p>
+
+<h4 id="程式金鑰">程式金鑰</h4>
+<p>安裝好後下一步是設置程式金鑰(Application Key)，如果是透過 Composer 或 Laravel 安裝器安裝的，這個 key 已經透過 <code class="highlighter-rouge">php artisan key:generate</code> 指令安裝好了。</p>
+
+<p>通常，金鑰是32字元的長度，並且被儲存在環境變量檔 <code class="highlighter-rouge">.env</code> 中。如果你還沒有將<code class="highlighter-rouge">.env,example</code> 重新命名為 <code class="highlighter-rouge">.env</code>，那麼請現在就重新命名吧。<strong>如果沒有設置 key ，Client and Server的Session 和其他加密數據會不安全</strong>。</p>
+
+<h4 id="其他配置">其他配置</h4>
+<p>Laravel 基本上已經可以運作了，當然你還可以在<code class="highlighter-rouge">config/app.php</code>更深入的了解每個註解說明，比如 <code class="highlighter-rouge">timezone</code> 和 <code class="highlighter-rouge">locale</code>。
+你還可能需要配置 Laravel 的其他組件，例如：</p>
+
+<ul>
+  <li><a href="https://learnku.com/docs/laravel/6.x/cache#configuration">Cache(外部連結)</a></li>
+  <li><a href="https://learnku.com/docs/laravel/6.x/database#configuration">Database(外部連結)</a></li>
+  <li><a href="https://learnku.com/docs/laravel/6.x/session#configuration">Session(外部連結)</a></li>
+</ul>
+
+<h2 id="server配置">Server配置</h2>
+<h3 id="目錄配置">目錄配置</h3>
+<p>Laravel 應該始終在 Server 配置的 <code class="highlighter-rouge">root dir</code> 也就是一開始提到的 <code class="highlighter-rouge">public/</code> 之外編撰，不應該嘗試從該根目錄中編撰任何程式碼，可能會暴露程式內任何的敏感文件。</p>
+
+<h3 id="好看的網址">好看的網址</h3>
+<h4 id="apache">Apache</h4>
+<p>Laravel 中包含了一個<code class="highlighter-rouge">public/.htaccess</code>的文件，通常用於在資源路徑中隱藏<code class="highlighter-rouge">index.php</code>的前端控制器。用Apache提供服務之前，先確定啟用<code class="highlighter-rouge">mod_rewrite</code> 模組，這樣 <code class="highlighter-rouge">.htaccess</code> 才能被server解析。</p>
+
+<p>如果Laravel附帶的<code class="highlighter-rouge">.htaccess</code>文件不起作用，嘗試下面的方法替代：</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Options +FollowSymLinks <span class="nt">-Indexes</span> 
+RewriteEngine On  
+
+RewriteCond %<span class="o">{</span>HTTP:Authorization<span class="o">}</span> <span class="nb">.</span> 
+RewriteRule .<span class="k">*</span> - <span class="o">[</span><span class="nv">E</span><span class="o">=</span>HTTP_AUTHORIZATION:%<span class="o">{</span>HTTP:Authorization<span class="o">}]</span>  
+
+RewriteCond %<span class="o">{</span>REQUEST_FILENAME<span class="o">}</span> <span class="o">!</span><span class="nt">-d</span> 
+RewriteCond %<span class="o">{</span>REQUEST_FILENAME<span class="o">}</span> <span class="o">!</span><span class="nt">-f</span> 
+RewriteRule ^ index.php <span class="o">[</span>L]
+</code></pre></div></div>
+<h4 id="nginx">Nginx</h4>
+<p>如果用 Nginx 直接配置站點位置請求在<code class="highlighter-rouge">index.php</code>就好</p>
+<div class="language-nginx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">location</span> <span class="n">/</span> <span class="p">{</span>
+	<span class="kn">try_files</span> <span class="nv">$url</span> <span class="nv">$url</span><span class="n">/</span> <span class="n">/index.php?</span><span class="nv">$query_string</span>
+<span class="err">}</span>
+</code></pre></div></div>
+<p>使用 <a href="https://laravel.com/docs/6.x/homestead">Homestead(外部連結)</a> 或 <a href="https://laravel.com/docs/6.x/valet">Valet時(外部連結)</a>，將自動配置漂亮的URL。</p>
+:ET

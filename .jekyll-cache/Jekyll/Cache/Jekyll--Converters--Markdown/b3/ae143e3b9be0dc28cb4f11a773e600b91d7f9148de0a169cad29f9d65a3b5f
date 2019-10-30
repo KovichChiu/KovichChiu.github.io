@@ -1,0 +1,33 @@
+I"5<p>一開始學<code class="highlighter-rouge">laravel</code>的時候只有翻寫，並不完全了解MVC架構，藉此讓自己在學習laravel的路上可以更有收穫。 
+<!-- more --></p>
+
+<p>重點摘要:</p>
+<ul id="markdown-toc">
+  <li><a href="#認識-laravel" id="markdown-toc-認識-laravel">認識 Laravel</a>    <ul>
+      <li><a href="#laravel-是什麼" id="markdown-toc-laravel-是什麼">Laravel 是什麼</a></li>
+      <li><a href="#框架是什麼" id="markdown-toc-框架是什麼">框架是什麼</a></li>
+      <li><a href="#laravel-框架" id="markdown-toc-laravel-框架">Laravel 框架</a></li>
+    </ul>
+  </li>
+</ul>
+<hr />
+
+<p>參考文獻：</p>
+
+<ol>
+  <li><a href="https://learnku.com/docs/laravel/6.x">Laravel 6 中文文档</a></li>
+  <li><a href="https://laravel.com/">Laravel</a></li>
+  <li><a href="https://legacy.gitbook.com/book/tony915/laravel4/details">Laravel 4.2 入門</a></li>
+</ol>
+
+<h1 id="認識-laravel">認識 Laravel</h1>
+<h2 id="laravel-是什麼">Laravel 是什麼</h2>
+<p>php開發框架的一種，以目前有被使用來開發的php框架，Laravel為最受大眾使用的開發框架。</p>
+
+<h2 id="框架是什麼">框架是什麼</h2>
+<p>框架(Framwork)，是一個被設計用來完成特定事務的規範。Programmer必須遵循規範來開發軟體或網站。現在大多框架都參考 <a href="https://zh.wikipedia.org/wiki/MVC">MVC架構</a> 為概念來設計，因為早期都是 <code class="highlighter-rouge">HTML</code> + <code class="highlighter-rouge">php</code> 混雜的方式編撰，但這只會讓後續要維護的工程師非常困擾，光是在一堆html中找到php可以說是非常麻煩，長期維護是個大問題。
+於是有人想到了把這些有各自任務的部份切割開來。MVC 架構可以把這些部份各自獨立成 Model-View-Controller（模型－視圖－控制器）。Model 屬於資料的部份，可能是商業邏輯或是資料庫存取等；View 屬於顯示的部份，像是 HTML、CSS 等；Controller 會偵對請求做出回應及處理，例如從 Model 中取得資料，並要求 View 來顯示。</p>
+
+<h2 id="laravel-框架">Laravel 框架</h2>
+<p>Laravel 是基於 MVC 架構模式來打造的框架，並且設計出許多讓開發者更有效率的工具。Laravel 的 Artisan 提供許多指令，讓你可以使用這些指令，快速的完成許多任務；它的 Blade 樣板系統，將程式碼與 HTML 頁面完整的分離，讓你專注在網頁頁面的設計；它的 Routing 機制，簡單卻強大的管理網址與頁面的路徑指定；利用 Controller 將程式邏輯隱藏在背後；Eloquent ORM 讓你再也不必撰寫任何的 SQL 指令就能和資料庫互動；利用 Migration 工具，讓資料庫的遷移不再是一件惱人的事。還有很多強大的功能，您將在使用後愛上它。</p>
+:ET
