@@ -1,0 +1,57 @@
+I"�<p>當初在安裝 <code class="highlighter-rouge">Composer</code> 真的浪費好多時間，希望可以藉此幫助需要懶人包的新手<br />
+<!-- more --></p>
+
+<p>重點摘要:</p>
+<ul id="markdown-toc">
+  <li><a href="#安裝流程" id="markdown-toc-安裝流程">安裝流程</a></li>
+  <li><a href="#基本使用" id="markdown-toc-基本使用">基本使用</a>    <ul>
+      <li><a href="#安裝的依附檔案" id="markdown-toc-安裝的依附檔案">安裝的依附檔案</a></li>
+    </ul>
+  </li>
+</ul>
+<hr />
+<h1 id="安裝流程">安裝流程</h1>
+<ul>
+  <li>第一步：下載 <code class="highlighter-rouge">Composer</code> 主程式。→ <a href="https://getcomposer.org/Composer-Setup.exe">點我下載</a></li>
+  <li>第二步：安裝 <code class="highlighter-rouge">composer</code>。直接點擊安裝，完成後便可以在 <code class="highlighter-rouge">Cmd</code> 下 <code class="highlighter-rouge">composer</code> 的指令了。</li>
+  <li>第三部：<code class="highlighter-rouge">Cmd</code> 移動到安裝位址，並運行以下腳本。</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>php <span class="nt">-r</span> <span class="s2">"copy('https://getcomposer.org/installer','composer-setup.php');"</span> <span class="c">#安裝檔下載</span>
+php <span class="nt">-r</span> <span class="s2">"if (hash_file('sha384', 'composer-setup.php') === 'a5c698ffe4b8e849a443b120cd5ba38043260d5c4023dbf93e1558871f1f07f58274fc6f4c93bcfd858c6bd0775cd8d1') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"</span> <span class="c">#用sha-384驗證安裝檔</span>
+php composer-setup.php <span class="c">#執行安裝檔</span>
+php <span class="nt">-r</span> <span class="s2">"unlink('composer-setup.php');"</span> <span class="c">#刪除安裝檔</span>
+</code></pre></div></div>
+<ul>
+  <li>第四步：自動檢查<code class="highlighter-rouge">php.ini</code>配置問題，若有錯誤會跳出警告。目錄中的<code class="highlighter-rouge">composer.phar</code>則為最新版本。</li>
+  <li>第五步：複製一份<code class="highlighter-rouge">composer.phar</code>並更改副檔名為<code class="highlighter-rouge">composer.bat</code></li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">echo</span> @php <span class="s2">"%~dp0composer.phar"</span> %<span class="k">*</span><span class="o">&gt;</span>composer.bat
+</code></pre></div></div>
+<ul>
+  <li>第六步：重新啟動Cmd嘗試輸入：</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>composer <span class="nt">-v</span> <span class="c">#若顯示版本資訊則為安裝成功</span>
+</code></pre></div></div>
+
+<h1 id="基本使用">基本使用</h1>
+<p>在開始使用composer之前，需要有一個<code class="highlighter-rouge">composer.json</code></p>
+<h2 id="安裝的依附檔案">安裝的依附檔案</h2>
+<p>安裝依序檔案請執行<code class="highlighter-rouge">install</code></p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>php composer.phar <span class="nb">install</span>
+</code></pre></div></div>
+<p>執行完之後有兩種可能：</p>
+
+<ol>
+  <li>不安裝<code class="highlighter-rouge">composer.lock</code>
+若之前都沒有執行過install，並且也沒有<code class="highlighter-rouge">composer.lock</code>的存在，則<code class="highlighter-rouge">composer</code>只需要解析<code class="highlighter-rouge">composer.phar</code>中的所有依附檔案，然後將其文件的最新版本下載到<code class="highlighter-rouge">vendor/</code>下(<code class="highlighter-rouge">vendor</code>為所有第三方代碼常規位址)。</li>
+</ol>
+<font color="red">tips.</font>
+<p>如果需要使用git作為版本控制，可能需要將<code class="highlighter-rouge">vendor/</code>加入<code class="highlighter-rouge">.gitignore</code>中，否則第三方代碼將會全數上交<code class="highlighter-rouge">git</code>。</p>
+<ol>
+  <li>安裝<code class="highlighter-rouge">composer.lock</code>
+代表其他人對於這個專案已經執行過<code class="highlighter-rouge">composer</code>，<code class="highlighter-rouge">composer.lock</code>作用是確保所有使用該專案的人<code class="highlighter-rouge">composer</code>內文件版本都相同。</li>
+</ol>
+:ET

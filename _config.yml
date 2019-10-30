@@ -1,0 +1,37 @@
+# Permalinks
+#
+# Use of `relative_permalinks` ensures post links from the index work properly.
+permalink:           pretty
+
+# Setup
+title:               Sevenz's Blog
+tagline:             '荒唐上班的日子'
+description:         "Sevenz's Blog"
+url:
+baseurl:             ''
+plugins:
+  - jekyll-paginate
+paginate:            5
+timezone: Asia/Taipei
+
+# About/contact
+author:
+  name:              Kovich Chiu
+  url:               https://github.com/KovichChiu
+  email:             kovich850329@gmail.com
+
+# Custom vars
+version:             1.0.0
+
+# Tag: generate pages for each tag where we can list posts
+collections:
+  tag:
+    output: true
+
+defaults:
+  -
+    scope:
+      path: ""
+      type: tag
+    values:
+      layout: "tag"
