@@ -24,10 +24,11 @@ title: Home
     <span class="post-date">{{ post.date | date_to_string }}
     </span>
     {{ post.excerpt }}
-
-    <a href="{{ site.baseurl }}{{ post.url }}">
-      Read the Article →
-    </a>
+    <div style="text-align: right;">
+      <a href="{{ site.baseurl }}{{ post.url }}">
+        閱讀更多 →
+      </a>
+    </div>
   </div>
   {% endfor %}
 </div>

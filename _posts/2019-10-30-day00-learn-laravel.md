@@ -11,7 +11,7 @@ comments: true
 
 一開始學`laravel`的時候只有翻寫，並不完全了解MVC架構，藉此讓自己在學習laravel的路上可以更有收穫。 
 <!-- more -->  
-  
+
 重點摘要:    
 * abstact    
 {:toc}    

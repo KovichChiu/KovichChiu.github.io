@@ -10,9 +10,9 @@ comments: true
 ---  
 
 
-  
 試著用Command Line，畫出超美的分支圖吧！   
-<!-- more -->   
+<!-- more -->  
+
 # 分支圖畫法
 
  - 平常我在用command畫出很美的分支圖，通常會用 --graph --oneline

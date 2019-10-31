@@ -12,7 +12,7 @@ comments: true
 `Laravel`把所有的應用設定都放在那裡了，去找吧，想要的話全部都給你 ─ `config/`。 
 目錄結構像是地牢嗎？請容我娓娓道來...
 <!-- more -->    
-  
+
 重點摘要:      
 * abstact      
 {:toc}
