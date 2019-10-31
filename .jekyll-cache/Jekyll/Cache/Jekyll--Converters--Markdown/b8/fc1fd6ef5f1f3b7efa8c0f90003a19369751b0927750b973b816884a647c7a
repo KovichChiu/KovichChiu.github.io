@@ -1,0 +1,354 @@
+I"�~<p><code class="highlighter-rouge">Laravel</code>把所有的應用設定都放在那裡了，去找吧，想要的話全部都給你 ─ <code class="highlighter-rouge">config/</code>。 
+目錄結構像是地牢嗎？請容我娓娓道來…
+<!-- more --></p>
+
+<p>重點摘要:</p>
+<ul id="markdown-toc">
+  <li><a href="#組態" id="markdown-toc-組態">組態</a>    <ul>
+      <li><a href="#環境組態" id="markdown-toc-環境組態">環境組態</a></li>
+      <li><a href="#環境變數型態" id="markdown-toc-環境變數型態">環境變數型態</a></li>
+      <li><a href="#查看環境組態" id="markdown-toc-查看環境組態">查看環境組態</a></li>
+      <li><a href="#確定當前環境" id="markdown-toc-確定當前環境">確定當前環境</a></li>
+      <li><a href="#在測試站隱藏環境變數" id="markdown-toc-在測試站隱藏環境變數">在測試站隱藏環境變數</a></li>
+      <li><a href="#訪問組態資料" id="markdown-toc-訪問組態資料">訪問組態資料</a></li>
+      <li><a href="#快取組態" id="markdown-toc-快取組態">快取組態</a></li>
+      <li><a href="#站點維護模式" id="markdown-toc-站點維護模式">站點維護模式</a>        <ul>
+          <li><a href="#維護模式與隊列" id="markdown-toc-維護模式與隊列">維護模式與隊列</a></li>
+          <li><a href="#維護模式的替代方案" id="markdown-toc-維護模式的替代方案">維護模式的替代方案</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><a href="#目錄結構" id="markdown-toc-目錄結構">目錄結構</a>    <ul>
+      <li><a href="#簡介" id="markdown-toc-簡介">簡介</a>        <ul>
+          <li><a href="#放-models-的目錄呢去哪了" id="markdown-toc-放-models-的目錄呢去哪了">放 Models 的目錄呢？去哪了？</a></li>
+        </ul>
+      </li>
+      <li><a href="#根目錄" id="markdown-toc-根目錄">根目錄</a>        <ul>
+          <li><a href="#app-目錄" id="markdown-toc-app-目錄">App 目錄</a></li>
+          <li><a href="#bootstrap-目錄" id="markdown-toc-bootstrap-目錄">Bootstrap 目錄</a></li>
+          <li><a href="#config-目錄" id="markdown-toc-config-目錄">Config 目錄</a></li>
+          <li><a href="#database-目錄" id="markdown-toc-database-目錄">Database 目錄</a></li>
+          <li><a href="#public-目錄" id="markdown-toc-public-目錄">Public 目錄</a></li>
+          <li><a href="#resources-目錄" id="markdown-toc-resources-目錄">Resources 目錄</a></li>
+          <li><a href="#routes-目錄" id="markdown-toc-routes-目錄">Routes 目錄</a>            <ul>
+              <li><a href="#webphp" id="markdown-toc-webphp">web.php</a></li>
+              <li><a href="#apiphp" id="markdown-toc-apiphp">api.php</a></li>
+              <li><a href="#consolephp" id="markdown-toc-consolephp">console.php</a></li>
+              <li><a href="#channelsphp" id="markdown-toc-channelsphp">channels.php</a></li>
+            </ul>
+          </li>
+          <li><a href="#storage-目錄" id="markdown-toc-storage-目錄">Storage 目錄</a></li>
+          <li><a href="#tests-目錄" id="markdown-toc-tests-目錄">Tests 目錄</a></li>
+          <li><a href="#vendor-目錄" id="markdown-toc-vendor-目錄">Vendor 目錄</a></li>
+        </ul>
+      </li>
+      <li><a href="#app-目錄-1" id="markdown-toc-app-目錄-1">App 目錄</a>        <ul>
+          <li><a href="#broadcasting-目錄" id="markdown-toc-broadcasting-目錄">Broadcasting 目錄</a></li>
+          <li><a href="#console-目錄" id="markdown-toc-console-目錄">Console 目錄</a></li>
+          <li><a href="#events-目錄" id="markdown-toc-events-目錄">Events 目錄</a></li>
+          <li><a href="#exceptions-目錄" id="markdown-toc-exceptions-目錄">Exceptions 目錄</a></li>
+          <li><a href="#http-目錄" id="markdown-toc-http-目錄">Http 目錄</a></li>
+          <li><a href="#jobs-目錄" id="markdown-toc-jobs-目錄">Jobs 目錄</a></li>
+          <li><a href="#listeners-目錄" id="markdown-toc-listeners-目錄">Listeners 目錄</a></li>
+          <li><a href="#mail-目錄" id="markdown-toc-mail-目錄">Mail 目錄</a></li>
+          <li><a href="#notifications-目錄" id="markdown-toc-notifications-目錄">Notifications 目錄</a></li>
+          <li><a href="#policies-目錄" id="markdown-toc-policies-目錄">Policies 目錄</a></li>
+          <li><a href="#providers-目錄" id="markdown-toc-providers-目錄">Providers 目錄</a></li>
+          <li><a href="#rules-目錄" id="markdown-toc-rules-目錄">Rules 目錄</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h1 id="組態">組態</h1>
+<h2 id="環境組態">環境組態</h2>
+<p>對於整個應用在運作的過程中，環境變數的設定很重要。比如：你可能會希望 local 與 server 所使用的快取是不同的。
+為了做到這一點，Laravel 使用了 <a href="https://github.com/vlucas/phpdotenv">DotEnv</a>，全新的Laravel專案中，root目錄底下會有一個 <code class="highlighter-rouge">.env.example</code>，透過 Composer 安裝 Laravel，則會自動更名<code class="highlighter-rouge">.env</code>，否則需要手動喔。</p>
+
+<p><em><code class="highlighter-rouge">.env</code> 包含許多敏感憑證，加上每個 Developer 使用到的環境變數是不同的，所以 <code class="highlighter-rouge">.env</code> 是不能放進 VC SourceCode 中的</em></p>
+
+<p>整個開發的過程，會希望 <code class="highlighter-rouge">.env.example</code> 還包含在 root 目錄底下，可以快速地切換環境變數，讓你更快速、清楚的感受到差異。你也可以創建一個 <code class="highlighter-rouge">.env.testing</code> 在 run PHPUnit 進行測試時，或是以 <code class="highlighter-rouge">--env=testing</code> 當作選項執行 <code class="highlighter-rouge">artisan</code> 指令時，將會直接 cover  <code class="highlighter-rouge">.env</code> 的設定。</p>
+
+<blockquote>
+  <p>Tip: <code class="highlighter-rouge">.env</code> 中的所有變數都可以被<strong>外部</strong>變數(Server 或 System等級的環境變數)覆蓋。</p>
+</blockquote>
+
+<h2 id="環境變數型態">環境變數型態</h2>
+<p><code class="highlighter-rouge">.env</code> 所有的變數的型態都被 parsed(解析) 成 <font color="red">String</font>，為此，可以使用 <code class="highlighter-rouge">env()</code>，來得到更多變數型態。</p>
+
+<table>
+  <thead>
+    <tr>
+      <th><code class="highlighter-rouge">.env</code>值</th>
+      <th><code class="highlighter-rouge">env()</code>值</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>true</td>
+      <td>(bool)true</td>
+    </tr>
+    <tr>
+      <td>(true)</td>
+      <td>(bool)true</td>
+    </tr>
+    <tr>
+      <td>false</td>
+      <td>(bool)false</td>
+    </tr>
+    <tr>
+      <td>(false)</td>
+      <td>(bool)false</td>
+    </tr>
+    <tr>
+      <td>empty</td>
+      <td>(String)””</td>
+    </tr>
+    <tr>
+      <td>(empty)</td>
+      <td>(String)””</td>
+    </tr>
+    <tr>
+      <td>null</td>
+      <td>(null)null</td>
+    </tr>
+    <tr>
+      <td>(null)</td>
+      <td>(null)null</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>如果需要使用「包含」空格的變數，請用雙引號包起來</strong></p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">APP_NAME</span><span class="o">=</span><span class="s2">"My Application"</span>
+</code></pre></div></div>
+
+<h2 id="查看環境組態">查看環境組態</h2>
+<p>當接收到請求的時候，所有被列出的變數，將會被載入到 PHP的超級全域變數 <code class="highlighter-rouge">$_ENV</code>中。然而，你可能會使用 <code class="highlighter-rouge">env</code> helper 來查詢所有組態變數的值。如果你看遍所有 Laravel 組態檔案，你可能會發現，一些選項已經加入 <code class="highlighter-rouge">env()</code> 。</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s1">'debug'</span> <span class="o">=&gt;</span> <span class="nx">env</span><span class="p">(</span><span class="s1">'APP_DEBUG'</span><span class="p">,</span> <span class="kc">false</span><span class="p">),</span> <span class="c1">//env()會回傳'APP_DEBUG'的值(K-V Pair)</span>
+</code></pre></div></div>
+<blockquote>
+  <p>第二個值 <code class="highlighter-rouge">false</code> 是「<strong>預設值</strong>」，目的是當該環境變數不存在值時(key沒有value)，便會使用 <code class="highlighter-rouge">false</code>。</p>
+</blockquote>
+
+<h2 id="確定當前環境">確定當前環境</h2>
+<p>整個應用環境都是靠著 <code class="highlighter-rouge">.env</code> 中 <code class="highlighter-rouge">APP_ENV</code> 來決定的，可以用 <code class="highlighter-rouge">App</code> <a href="https://laravel.com/docs/6.x/facades">facade</a> 中的 <code class="highlighter-rouge">environment</code> 函數來訪問。</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$environment</span> <span class="o">=</span> <span class="nx">App</span><span class="o">::</span><span class="na">environment</span><span class="p">();</span>
+</code></pre></div></div>
+<p>你可以傳遞參數給 <code class="highlighter-rouge">environment()</code> 檢查是否與給定值相同，若相同回傳 <code class="highlighter-rouge">true</code>。</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="p">(</span><span class="nx">App</span><span class="o">::</span><span class="na">environment</span><span class="p">(</span><span class="s1">'local'</span><span class="p">))</span> <span class="p">{</span>
+    <span class="c1">// The environment is local</span>
+<span class="p">}</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nx">App</span><span class="o">::</span><span class="na">environment</span><span class="p">([</span><span class="s1">'local'</span><span class="p">,</span> <span class="s1">'staging'</span><span class="p">]))</span> <span class="p">{</span>
+    <span class="c1">// The environment is either local OR staging...</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<blockquote>
+  <p>因為會被 server 級的 <code class="highlighter-rouge">APP_ENV</code> 覆蓋，所以這方法非常好用，當你需要為不同的環境配上同一個應用程式時，可以用配給「服務器配置中的給定環境」一個「給定的主機」的方式來實現。</p>
+</blockquote>
+
+<h2 id="在測試站隱藏環境變數">在測試站隱藏環境變數</h2>
+<p>如果有一個例外(exception)沒有被抓到而且 <code class="highlighter-rouge">APP_DEBUG</code> 這個環境變數回傳是為 <code class="highlighter-rouge">true</code>，那這個測試站會秀出所有的環境變數的 Key - Value。在某些情況下，我們可以藉由設定 <code class="highlighter-rouge">config/app.php</code> 中的 <code class="highlighter-rouge">debug_blacklist</code> 選項，來隱藏某些變數。</p>
+
+<p>在<strong>環境變數</strong>和<strong>伺服器/請求資料</strong>中有一些接可以使用的變數，你需要將 <code class="highlighter-rouge">$_ENV</code> 跟 <code class="highlighter-rouge">$_SERVER</code> 加入黑單。</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">return</span> <span class="p">[</span>
+
+    <span class="c1">// ...</span>
+
+    <span class="s1">'debug_blacklist'</span> <span class="o">=&gt;</span> <span class="p">[</span>
+        <span class="s1">'_ENV'</span> <span class="o">=&gt;</span> <span class="p">[</span>
+            <span class="s1">'APP_KEY'</span><span class="p">,</span>
+            <span class="s1">'DB_PASSWORD'</span><span class="p">,</span>
+        <span class="p">],</span>
+
+        <span class="s1">'_SERVER'</span> <span class="o">=&gt;</span> <span class="p">[</span>
+            <span class="s1">'APP_KEY'</span><span class="p">,</span>
+            <span class="s1">'DB_PASSWORD'</span><span class="p">,</span>
+        <span class="p">],</span>
+
+        <span class="s1">'_POST'</span> <span class="o">=&gt;</span> <span class="p">[</span>
+            <span class="s1">'password'</span><span class="p">,</span>
+        <span class="p">],</span>
+    <span class="p">],</span>
+<span class="p">];</span>
+</code></pre></div></div>
+
+<h2 id="訪問組態資料">訪問組態資料</h2>
+<p>任何時間任何位置你都可以在應用中利用全域函數 <code class="highlighter-rouge">config</code> 來輕鬆地取得組態資料。你可以用「.」來連接<strong>檔案名稱</strong>以及<strong>任何你需要的Key</strong>以取得組態資料。也可以指定 <code class="highlighter-rouge">default value</code> ，若選項不存在則 <code class="highlighter-rouge">return default value</code>。</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$value</span> <span class="o">=</span> <span class="nx">config</span><span class="p">(</span><span class="s1">'app.timezone'</span><span class="p">);</span> <span class="c1">//app.php 中的 timezone 選項</span>
+</code></pre></div></div>
+<p>也可以丟陣列給 <code class="highlighter-rouge">config</code> 函數來設定選項的值。</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">config</span><span class="p">([</span><span class="s1">'app.timezone'</span> <span class="o">=&gt;</span> <span class="s1">'Asia/Taipei'</span><span class="p">]);</span>
+</code></pre></div></div>
+<p><code class="highlighter-rouge">timezone</code>內容請參考：<a href="https://en.wikipedia.org/wiki/List_of_tz_database_time_zones">維基百科Wikipedia: # List of tz database time zones</a></p>
+
+<h2 id="快取組態">快取組態</h2>
+<p>如果想要提升整體應用的速度，我們可以利用 <code class="highlighter-rouge">artisan</code> 指令 <code class="highlighter-rouge">config:cache</code>，來把所有的組態都快取到一個檔案中，這樣框架就能快速載入它。</p>
+
+<p>通常會將 <code class="highlighter-rouge">php artisan config:cache</code> 當作專案生產部署常規的一部分去執行。但在整個專案的開發過程中，由於環境變數很容易被改變，所以不會將該指令在本地開發的時候執行。</p>
+
+<blockquote>
+  <p>注意：當處理部署的時候如果要執行 <code class="highlighter-rouge">config:cache</code>，應該要確定在環境組態的檔案中，你只用到 <code class="highlighter-rouge">env()</code> 函數。一旦環境組態被快取了，<code class="highlighter-rouge">.env</code> 將不會再次被載入，而所有使用 <code class="highlighter-rouge">env()</code> 函數呼叫的回應都會是 <code class="highlighter-rouge">null</code>。</p>
+</blockquote>
+
+<h2 id="站點維護模式">站點維護模式</h2>
+<p>當專案進入維護模式後，所有的回應將會被一個固定的頁面遮蓋，讓我們可以更輕鬆的去更新整個專案。維護模式檢查被包含在框架的中間軟體堆(middleware stack，中間軟體→介於複雜的系統中間，協助通訊或應用程式的port；堆→一組協同工作，以支援軟體的<strong>開發</strong>、<strong>維護</strong>和<strong>操作技術</strong>。)，且在維護模式中，將會丟出 503 狀態，還有一個 <code class="highlighter-rouge">MaintenanceModeException</code> 例外。</p>
+
+<p>執行 <code class="highlighter-rouge">down</code> 這個 Artisan 指令就可以進入站點維護模式囉。</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">php</span> <span class="nx">artisan</span> <span class="nx">down</span>
+</code></pre></div></div>
+<p>我們可以用 <code class="highlighter-rouge">down</code> 來下 <code class="highlighter-rouge">message</code> 跟 <code class="highlighter-rouge">retry</code> 這兩個項目，<code class="highlighter-rouge">message</code> 可以顯示或記錄狀態；而 <code class="highlighter-rouge">retry</code> 可以設定 HTTP header <code class="highlighter-rouge">Retry-After</code> 的值。</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">php</span> <span class="nx">artisan</span> <span class="nx">down</span> <span class="o">--</span><span class="nx">message</span><span class="o">=</span><span class="s2">"Upgrading Database"</span> <span class="o">--</span><span class="nx">retry</span><span class="o">=</span><span class="mi">60</span>
+</code></pre></div></div>
+<p>也可以設定在站點維護模式時，允許進入的IP位置。</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">php</span> <span class="nx">artisan</span> <span class="nx">down</span> <span class="o">--</span><span class="nx">allow</span><span class="o">=</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span> <span class="o">--</span><span class="nx">allow</span><span class="o">=</span><span class="mf">192.168</span><span class="o">.</span><span class="mf">0.0</span><span class="o">/</span><span class="mi">16</span>
+</code></pre></div></div>
+<p>當需要結束站點模式時，<code class="highlighter-rouge">up</code> 專案吧。</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">php</span> <span class="nx">artisan</span> <span class="nx">up</span>
+</code></pre></div></div>
+<blockquote>
+  <p>我們可以從 <code class="highlighter-rouge">resources/views/errors/503.blade.php</code> 來客製化自己的站點維護模式頁面喔。</p>
+</blockquote>
+
+<h3 id="維護模式與隊列">維護模式與隊列</h3>
+<p>在維護模式的狀態下，會暫停一切隊列，直到回復到正常模式才會繼續被執行。</p>
+
+<h3 id="維護模式的替代方案">維護模式的替代方案</h3>
+<p>維護模式的時候會有幾秒鐘的停機部署，可以考慮使用像是 <a href="https://envoyer.io/">Envoyer</a> 的替代方案來實現 Laravel 的<strong>零停機部署</strong>。</p>
+
+<h1 id="目錄結構">目錄結構</h1>
+<h2 id="簡介">簡介</h2>
+<p>為了要給開發者有更好的體驗，Laravel幾乎可以說是對於目錄本身沒有任何限制。只要你有任何可以由 Composer Autoload 的項目，都可以很輕鬆的被載入你的專案中，甚至可以什麼事都不做。</p>
+
+<h3 id="放-models-的目錄呢去哪了">放 Models 的目錄呢？去哪了？</h3>
+<p>建立起專案後，大家一定都很困惑：「欸阿我把 Laravel 都弄起來了，Models 勒？怎麼找不到」。
+好啦，Laravel 故意的，不過這是因為「Models」對於世界各地的開發者來說代表很多不一樣的意思，簡單來說，太曖昧了啦，所以才將它拿掉的。
+有些開發者們將「Models」作為整個專案的邏輯庫；也有些將它製作成與資料庫有高度關係的資料庫交互類別。</p>
+
+<p>以上種種原因，Laravel 選擇將充滿爭議的「Models」預設放進 <code class="highlighter-rouge">app/</code> 目錄，當然你也可以依照個人需求改變它的位置。</p>
+
+<h2 id="根目錄">根目錄</h2>
+<h3 id="app-目錄">App 目錄</h3>
+<p>這個 <code class="highlighter-rouge">app/</code> 目錄，裡面放著整個專案的核心程式碼，幾乎所有的類別都應該要放在這邊，稍後會更詳盡的探討它。</p>
+
+<h3 id="bootstrap-目錄">Bootstrap 目錄</h3>
+<p><code class="highlighter-rouge">bootstrap</code> 目錄包含了引導整個框架的 <code class="highlighter-rouge">app.php</code>，也包含了 <code class="highlighter-rouge">cache/</code> 目錄，<code class="highlighter-rouge">cache/</code> 目錄底下存放著由框架針對強化性能所產生的檔案，例如路由、伺服器快取檔。</p>
+
+<h3 id="config-目錄">Config 目錄</h3>
+<p>裡面包含了整個專案的所有組態檔案，可以藉由研讀這些檔案更深入的了解所有可以使用的選項。</p>
+
+<h3 id="database-目錄">Database 目錄</h3>
+<p><code class="highlighter-rouge">database/</code> 目錄包含遷移檔、Model庫、還有一些源種子碼，你也可以用他來實現一個SQLite DB。</p>
+
+<h3 id="public-目錄">Public 目錄</h3>
+<p><code class="highlighter-rouge">public/</code> 目錄包含了整個專案回應所有請求的進入點 ─ <code class="highlighter-rouge">index.php</code>，這邊也會放著所有你會用到的資源，比如 Images、JavaScript 和 CSS。</p>
+
+<h3 id="resources-目錄">Resources 目錄</h3>
+<p><code class="highlighter-rouge">resources/</code> 目錄包含了視圖及還沒編譯的資源，比如：LESS、SASS 和 Javascript，也包含了所有語言檔。</p>
+
+<h3 id="routes-目錄">Routes 目錄</h3>
+<p><code class="highlighter-rouge">routes/</code> 目錄包含了整個專案的路由定義，預設有 <code class="highlighter-rouge">web.php</code>、<code class="highlighter-rouge">api.php</code>、<code class="highlighter-rouge">console.php</code> 和 <code class="highlighter-rouge">channels.php</code> 四個路由定義。</p>
+
+<h4 id="webphp">web.php</h4>
+<p>包含了放在 <code class="highlighter-rouge">web</code> 這個中間軟體群的 <code class="highlighter-rouge">RouteServiceProvider</code> 路由，它提供了 Session 狀態、CSRF 保護還有 cookie 加密。如果你的專案沒有提供「無狀態的」、「RESTful API(被轉化成Rest架構的Web API)」，則所有的路由最後都建立在 <code class="highlighter-rouge">web.php</code> 中。</p>
+
+<h4 id="apiphp">api.php</h4>
+<p>包含了放在 <code class="highlighter-rouge">api</code> 這個中間軟體群的 <code class="highlighter-rouge">RouteServiceProvider</code> 路由，它提供了速度限制，這些路由都是無狀態的，所以藉由這些路由進入的所有請求，主要是為了經過 tokens 來取得認證，且拿不到任何 Session 狀態。</p>
+
+<h4 id="consolephp">console.php</h4>
+<p>可以在這裡定義所有根據控制台指令的閉包，每個閉包都被綁上一個命令實例，允許一種簡單的方法來與每個命令的 IO 方法進行交互。雖然這個檔案沒有定義HTTP路由，依然有定義根據控制台的進入點(路由)來進入到整個專案。</p>
+
+<h4 id="channelsphp">channels.php</h4>
+<p>只要你的專案能夠支援，你可以在這上面註冊任何事件廣播的頻道。</p>
+
+<h3 id="storage-目錄">Storage 目錄</h3>
+<p><code class="highlighter-rouge">storage/</code> 目錄包含了我們編譯的 Blade 模板、Session所生成的檔案、快取檔案和其他由框架所生成的檔案。這個目錄被分隔成 <code class="highlighter-rouge">app/</code>、<code class="highlighter-rouge">framework/</code>、<code class="highlighter-rouge">logs/</code>三個目錄。<code class="highlighter-rouge">app/</code> 存放任何由你的專案產生的檔案；<code class="highlighter-rouge">framework/</code> 存放了由框架所產生的檔案與快取；<code class="highlighter-rouge">logs/</code> 包含了整個專案的 log 檔。</p>
+
+<p>在 <code class="highlighter-rouge">storage/app/</code> 中有一個 <code class="highlighter-rouge">public/</code> 目錄，用來存放一些可以被公開的資料，比如：使用者的大頭貼等。你應該創建一個象徵性的鏈結 <code class="highlighter-rouge">public/storage</code> 來指向這個目錄。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>php artisan storage:link //你可以下這個指令來建立
+</code></pre></div></div>
+<h3 id="tests-目錄">Tests 目錄</h3>
+<p><code class="highlighter-rouge">tests/</code> 目錄包含了自動化的測試檔案，<a href="https://phpunit.de/">PHPUnit</a> test 就是一個開箱即用的很好的範例。每個測試類別，都應以 <code class="highlighter-rouge">Tset</code> 為後墜，可以用 <code class="highlighter-rouge">phpunit</code> 或  <code class="highlighter-rouge">php vendor/bin/phpunit</code> 指令來測試。</p>
+
+<h3 id="vendor-目錄">Vendor 目錄</h3>
+<p><code class="highlighter-rouge">vendor/</code> 放著所有 <a href="https://getcomposer.org/">Composer</a> 的依存檔案。</p>
+
+<h2 id="app-目錄-1">App 目錄</h2>
+<p>我們的專案大多都是放在 <code class="highlighter-rouge">app/</code> 下，一般來說，這個目錄被放在 <code class="highlighter-rouge">App</code> 這個命名空間下，而且藉由 Composer 根據 <a href="https://www.php-fig.org/psr/psr-4/">PSR-4 autoloading standard</a> 來自動載入。</p>
+
+<p><code class="highlighter-rouge">app/</code> 下包含了 <code class="highlighter-rouge">Console</code>、<code class="highlighter-rouge">Http</code>、<code class="highlighter-rouge">Providers</code>，將 <code class="highlighter-rouge">Console</code> 和 <code class="highlighter-rouge">Http</code> 目錄視為向專案的核心提供 API。HTTP 協議和 CLI 都是與應用程式交互的機制，但實際上並不包含應用程式邏輯。換句話說，它們是向你的應用程式發出指令的兩種方式。 <code class="highlighter-rouge">Console/</code> 包含所有的 Artisan 指令，而 <code class="highlighter-rouge">Http/</code> 目錄包含你的Controllres，中間軟體和請求。</p>
+
+<p>如果有其他的目錄想要放進app中，可以用 <code class="highlighter-rouge">make</code> 這個 Artisan 指令。舉例來說，我今天想要在 <code class="highlighter-rouge">app/</code> 下建立一個新的類別 <code class="highlighter-rouge">job/</code>，那我只能用 <code class="highlighter-rouge">make:job</code> 的方式來新建它，直接建立目錄是不會被 Laravel 吃到的喔。</p>
+
+<blockquote>
+  <p>因為會友許多類別通過 Artisan 指令產生在<code class="highlighter-rouge">app/</code>下。為了查看可用的指令可以執行以下指令</p>
+
+  <div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">php</span> <span class="nx">artisan</span> <span class="k">list</span> <span class="nx">make</span>
+</code></pre></div>  </div>
+</blockquote>
+
+<h4 id="broadcasting-目錄">Broadcasting 目錄</h4>
+
+<p><code class="highlighter-rouge">Broadcasting/</code>目錄包含應用程式的所有廣播通道類。這些類使用<code class="highlighter-rouge">make:channel</code>指令生成。此目錄預設是不存在的，但是當你創建第一個通道時它將被創建。要了解更多的關於頻道的信息，查看有關文檔<a href="https://learnku.com/docs/laravel/6.x/broadcasting">事件廣播</a>。</p>
+
+<h4 id="console-目錄">Console 目錄</h4>
+
+<p><code class="highlighter-rouge">Console/</code>目錄包含應用程式的所有自定義 Artisan 指令。這些指令可以使用<code class="highlighter-rouge">make:command</code>指令生成。此目錄也安置了控制台內核，在其中你可以註冊自定義的 Artisan 指令，並定義<a href="https://learnku.com/docs/laravel/6.x/scheduling">計劃任務</a>。</p>
+
+<h4 id="events-目錄">Events 目錄</h4>
+
+<p>預設情況下這個目錄是不存在的，但你可以通過<code class="highlighter-rouge">event:generate</code>和<code class="highlighter-rouge">make:event</code> Artisan 指令去創建。<code class="highlighter-rouge">Events/</code>目錄安置<a href="https://learnku.com/docs/laravel/6.x/events">事件類</a>。事件可用於提醒您的應用程式其它部分已發生給定操作，提供了極大的靈活性和解耦。</p>
+
+<h4 id="exceptions-目錄">Exceptions 目錄</h4>
+
+<p><code class="highlighter-rouge">Exceptions/</code>目錄包含應用程式的異常處理，並且也是一個放置應用程式拋出任何異常的好地方。如果你想自定義異常的記錄和渲染方式，你應該修改此目錄中的 <code class="highlighter-rouge">Handler</code> 類。</p>
+
+<h4 id="http-目錄">Http 目錄</h4>
+
+<p><code class="highlighter-rouge">Http/</code>目錄包含你的控制器，中間件和表單請求。處理進入應用程式請求的所有邏輯幾乎都放置在此目錄。</p>
+
+<h4 id="jobs-目錄">Jobs 目錄</h4>
+
+<p>預設情況下這個目錄是不存在的，但如果你執行 <code class="highlighter-rouge">make:job</code> Artisan指令時，它將被創建出來。<code class="highlighter-rouge">Jobs/</code>目錄安置應用程式的<a href="https://learnku.com/docs/laravel/6.x/queues">隊列任務</a>。Jobs可由應用程式排隊作業，也可以在當前請求的生命週期內同步運行。在當前請求期間同步運行的Jobs有時會稱為『指令』，因為它們是<a href="https://en.wikipedia.org/wiki/Command_pattern">指令模式</a>的一個實現。</p>
+
+<h4 id="listeners-目錄">Listeners 目錄</h4>
+
+<p>預設情況下這個目錄是不存在的，但如果你執行了 <code class="highlighter-rouge">event:generate</code> 或者 <code class="highlighter-rouge">make:listener</code> Artisan 指令時，它將會被創建出來。<code class="highlighter-rouge">Listeners</code> 目錄包含<a href="https://learnku.com/docs/laravel/6.x/events">事件</a>的處理類。事件偵聽器接收一個事件實例並執行邏輯以響應被觸發的事件。例如，一個 <code class="highlighter-rouge">UserRegistered</code> 事件可能被 <code class="highlighter-rouge">SendWelcomeEmail</code> 偵聽器處理。</p>
+
+<h4 id="mail-目錄">Mail 目錄</h4>
+
+<p>預設情況下這個目錄是不存在的，但如果你執行 <code class="highlighter-rouge">make:mail</code> Artisan 指令，它將被創建出來。 <code class="highlighter-rouge">Mail</code> 目錄包含應用程式發送郵件的所有類。郵件對象允許你去構建一個封裝所有邏輯的郵件類，在這個類中可以使用 <code class="highlighter-rouge">Mail::send</code> 方法發送郵件。</p>
+
+<h4 id="notifications-目錄">Notifications 目錄</h4>
+
+<p>預設情況下這個目錄是不存在的，但如果你執行<code class="highlighter-rouge">make:notification</code>Artisan 指令，它將被創建出來。<code class="highlighter-rouge">Notifications</code>目錄包含應用程式的發送的所有『事務』通知，比如關於應用程式中發生的事件的簡單通知。Laravel 的通知功能抽象了通過各種驅動（如：電子郵件，Slack，SMS 或者存儲在數據庫中）去發送通知。</p>
+
+<h4 id="policies-目錄">Policies 目錄</h4>
+
+<p>預設情況下這個目錄是不存在的，但如果你執行<code class="highlighter-rouge">make:policy</code>Artisan 指令，它將被創建出來。<code class="highlighter-rouge">Policies</code>目錄包含應用程式的授權策略類。策略用於確定一個用戶是否對一個資源能否執行一個給定的操作。有關更多信息，查看<a href="https://learnku.com/docs/laravel/6.x/authorization">授權文檔</a>。</p>
+
+<h4 id="providers-目錄">Providers 目錄</h4>
+
+<p><code class="highlighter-rouge">Providers/</code>目錄包含應用程式的所有 <a href="https://learnku.com/docs/laravel/6.x/providers">服務提供者</a>。服務提供者透過在服務容器中綁定服務引導應用程式，註冊事件或者準備為應用程式即將到來的請求執行其它任何任務。</p>
+
+<p>在一個新的Laravel 應用中，此目錄已經包含一些提供者。你可以根據需要隨意將你自己的提供者添加到此目錄中。</p>
+
+<h4 id="rules-目錄">Rules 目錄</h4>
+
+<p>預設情況下這個目錄是不存在的，但如果你執行 <code class="highlighter-rouge">make:rule</code> Artisan 指令，它將被創建出來。<code class="highlighter-rouge">Rules/</code>目錄包含應用程式的自定義驗證規則對象。規則用於將復雜的驗證邏輯封裝在一個簡單對象中。關於更多訊息，查看 <a href="https://learnku.com/docs/laravel/6.x/validation">驗證文檔</a>。</p>
+:ET
