@@ -1,0 +1,385 @@
+I"�o<p>Homestead的安裝與架構 
+<!-- more --></p>
+
+<p>重點摘要:</p>
+<ul id="markdown-toc">
+  <li><a href="#laravel-homestead" id="markdown-toc-laravel-homestead">Laravel Homestead</a>    <ul>
+      <li><a href="#介紹" id="markdown-toc-介紹">介紹</a>        <ul>
+          <li><a href="#內建軟體" id="markdown-toc-內建軟體">內建軟體</a></li>
+          <li><a href="#可選軟體" id="markdown-toc-可選軟體">可選軟體</a></li>
+        </ul>
+      </li>
+      <li><a href="#安裝與設定" id="markdown-toc-安裝與設定">安裝與設定</a>        <ul>
+          <li><a href="#第一步" id="markdown-toc-第一步">第一步</a></li>
+          <li><a href="#安裝-homestead-vagrant-box" id="markdown-toc-安裝-homestead-vagrant-box">安裝 Homestead Vagrant Box</a></li>
+          <li><a href="#安裝-homestead" id="markdown-toc-安裝-homestead">安裝 Homestead</a></li>
+          <li><a href="#設定-homestead" id="markdown-toc-設定-homestead">設定 Homestead</a>            <ul>
+              <li><a href="#設定vm" id="markdown-toc-設定vm">設定VM</a></li>
+              <li><a href="#設定共享目錄" id="markdown-toc-設定共享目錄">設定共享目錄</a></li>
+              <li><a href="#設定-nginx-站" id="markdown-toc-設定-nginx-站">設定 Nginx 站</a></li>
+              <li><a href="#主機名稱解析" id="markdown-toc-主機名稱解析">主機名稱解析</a></li>
+              <li><a href="#啟動-vagrant-虛擬機" id="markdown-toc-啟動-vagrant-虛擬機">啟動 Vagrant 虛擬機</a></li>
+              <li><a href="#針對項目安裝" id="markdown-toc-針對項目安裝">針對項目安裝</a></li>
+              <li><a href="#安裝可選功能" id="markdown-toc-安裝可選功能">安裝可選功能</a></li>
+              <li><a href="#aliases-別名" id="markdown-toc-aliases-別名">Aliases 別名</a></li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li><a href="#日常使用" id="markdown-toc-日常使用">日常使用</a>        <ul>
+          <li><a href="#隨時執行-vagrant-up" id="markdown-toc-隨時執行-vagrant-up">隨時執行 <code class="highlighter-rouge">vagrant up</code></a>            <ul>
+              <li><a href="#mac--linux" id="markdown-toc-mac--linux">Mac / Linux</a></li>
+              <li><a href="#windows" id="markdown-toc-windows">Windows</a></li>
+            </ul>
+          </li>
+          <li><a href="#用-ssh-連接" id="markdown-toc-用-ssh-連接">用 ssh 連接</a></li>
+          <li><a href="#db-連接" id="markdown-toc-db-連接">DB 連接</a></li>
+          <li><a href="#備份-db" id="markdown-toc-備份-db">備份 DB</a></li>
+          <li><a href="#db-快照" id="markdown-toc-db-快照">DB 快照</a></li>
+          <li><a href="#添加站點" id="markdown-toc-添加站點">添加站點</a></li>
+          <li><a href="#站點類型" id="markdown-toc-站點類型">站點類型</a></li>
+          <li><a href="#站點參數" id="markdown-toc-站點參數">站點參數</a></li>
+          <li><a href="#環境變數" id="markdown-toc-環境變數">環境變數</a></li>
+        </ul>
+      </li>
+      <li><a href="#補充" id="markdown-toc-補充">補充</a></li>
+    </ul>
+  </li>
+</ul>
+<hr />
+
+<h1 id="laravel-homestead">Laravel Homestead</h1>
+<h2 id="介紹">介紹</h2>
+<p>Homestead 可以在任何系統中運行，Windows、Mac、Linux等。
+Laravel Homestead 包含：</p>
+
+<ul>
+  <li>Nginx web server</li>
+  <li>PHP 7.1 - 7.3</li>
+  <li>MySQL</li>
+  <li>PostgreSQL</li>
+  <li>Redis</li>
+  <li>Memcached</li>
+  <li>Node</li>
+</ul>
+
+<blockquote>
+  <p>Tips. Windows 需要至 Bios 啟用硬體虛擬化技術(VT-x)。若你是在 Hyper-V 系統上使用 UEFI ，也必須禁用 Hyper-V 才能使用 VT-x。</p>
+</blockquote>
+
+<h3 id="內建軟體">內建軟體</h3>
+
+<ul>
+  <li>Ubuntu 18.04</li>
+  <li>Git</li>
+  <li>PHP 7.3</li>
+  <li>PHP 7.2</li>
+  <li>PHP 7.1</li>
+  <li>PHP 7.0</li>
+  <li>PHP 5.6</li>
+  <li>Nginx</li>
+  <li>MySQL</li>
+  <li>lmm for MySQL or MariaDB database snapshots</li>
+  <li>Sqlite3</li>
+  <li>PostgreSQL</li>
+  <li>Composer</li>
+  <li>Node (With Yarn, Bower, Grunt, and Gulp)</li>
+  <li>Redis</li>
+  <li>Memcached</li>
+  <li>Beanstalkd</li>
+  <li>Mailhog</li>
+  <li>avahi</li>
+  <li>ngrok</li>
+  <li>Xdebug</li>
+  <li>XHProf / Tideways / XHGui</li>
+  <li>wp-cli</li>
+</ul>
+
+<h3 id="可選軟體">可選軟體</h3>
+
+<ul>
+  <li>Apache</li>
+  <li>Blackfire</li>
+  <li>Cassandra</li>
+  <li>Chronograf</li>
+  <li>CouchDB</li>
+  <li>Crystal &amp; Lucky Framework</li>
+  <li>Docker</li>
+  <li>Elasticsearch</li>
+  <li>Gearman</li>
+  <li>Go</li>
+  <li>Grafana</li>
+  <li>InfluxDB</li>
+  <li>MariaDB</li>
+  <li>MinIO</li>
+  <li>MongoDB</li>
+  <li>MySQL 8</li>
+  <li>Neo4j</li>
+  <li>Oh My Zsh</li>
+  <li>Open Resty</li>
+  <li>PM2</li>
+  <li>Python</li>
+  <li>RabbitMQ</li>
+  <li>Solr</li>
+  <li>Webdriver &amp; Laravel Dusk Utilities</li>
+</ul>
+
+<h2 id="安裝與設定">安裝與設定</h2>
+<h3 id="第一步">第一步</h3>
+<p>首先，要有一個可以架設虛擬機的軟體，<a href="https://www.virtualbox.org/wiki/Downloads">VirtualBox 6.x</a>、<a href="https://www.vmware.com/">VMWare</a>、<a href="https://www.parallels.com/products/desktop/">Parallels</a>、<a href="https://docs.microsoft.com/en-us/virtualization/hyper-v-on-windows/quick-start/enable-hyper-v">Hyper-V</a>。當然啦，VMware 是需要花錢的，預算有限的話我很推薦 VirtualBox ，因為沒有太多的其他限制，也不需要華麗且複雜的操作。</p>
+
+<h3 id="安裝-homestead-vagrant-box">安裝 Homestead Vagrant Box</h3>
+<p>VirtualBox + Vagrant 都安裝好了，就可以開始安裝 Homestead 了。我們打開終端機把<code class="highlighter-rouge">laravel/homestead box</code> 加進 Vagrant 進行安裝，因為下載連線穩定度有限，指令下好後可以先閱讀後續步驟當預習喔。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vagrant box add laravel/homestead
+</code></pre></div></div>
+<p>若不成功，請確認 Vagrant 版本是否為最新版。</p>
+
+<blockquote>
+  <p>Tips. Homestead 會定期發出「alpha」/「beta」box用於測試，這可能會影響 <code class="highlighter-rouge">vagrant box add</code> 命令。如果你在運行 <code class="highlighter-rouge">vagrant box add</code> 時遇到問題，可以運行 <code class="highlighter-rouge">vagrant up</code> 命令，當 Vagrant 嘗試啟動虛擬機時，將下載正確的 box。</p>
+</blockquote>
+
+<h3 id="安裝-homestead">安裝 Homestead</h3>
+<p>用 <code class="highlighter-rouge">git clone</code> 來下載 Homestead 的程式碼，建議是裝在 Homestead 下，Windows 一般應該都是安裝在<code class="highlighter-rouge">user/</code>底下，所以先切換到 <code class="highlighter-rouge">C:\Users\_username_\Homestead\</code> 再 clone 吧。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone https://github.com/laravel/homestead.git
+</code></pre></div></div>
+<p>切記，因為 Homestead <code class="highlighter-rouge">master</code> 並非穩定版，所以要去找分支上有標籤註記是穩定版的版本 clone 喔，或是你可以直接去找包含最新穩定版本的 <code class="highlighter-rouge">release</code> 分支。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git checkout release
+</code></pre></div></div>
+<p>clone 完成後，直接在 Homestead 目錄下指令來創建 <code class="highlighter-rouge">Homestead.yaml</code> 設定檔。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Mac / Linux...</span>
+bash init.sh
+
+<span class="c"># Windows...</span>
+init.bat
+</code></pre></div></div>
+<h3 id="設定-homestead">設定 Homestead</h3>
+<h4 id="設定vm">設定VM</h4>
+<p><code class="highlighter-rouge">Homestead.yaml</code> 有一個 <code class="highlighter-rouge">provide</code> 參數決定我們使用的 VM。 <code class="highlighter-rouge">virtualbox</code>、<code class="highlighter-rouge">vmware_fusion</code>、<code class="highlighter-rouge">vmware_workstation</code>、<code class="highlighter-rouge">parallels</code>、<code class="highlighter-rouge">hyperv</code>。</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">provider</span><span class="pi">:</span> <span class="s">virtualbox</span>
+</code></pre></div></div>
+<h4 id="設定共享目錄">設定共享目錄</h4>
+<p><code class="highlighter-rouge">Homestead.yaml</code> 有一個 <code class="highlighter-rouge">folders</code> 參數，裡面列出所有與 Homestead 共享的目錄，可以多個目錄設定。</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">folders</span><span class="pi">:</span>  
+    <span class="pi">-</span> <span class="na">map</span><span class="pi">:</span>  <span class="s">~/code/project1</span>         <span class="c1"># 對應主機的位置</span>
+      <span class="na">to</span><span class="pi">:</span>  <span class="s">/home/vagrant/project1</span>   <span class="c1"># 虛擬機的位置	 </span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>Tips. Windows路徑設定要小心，<code class="highlighter-rouge">/</code> 即為跟目錄，會指向 <code class="highlighter-rouge">C:\</code> 所以路徑應該設為 <code class="highlighter-rouge">/User/_yourpath_</code>。</p>
+</blockquote>
+
+<p>建議對應的方式為一個project對應一個資料夾，不要整個大資料夾對應整個大資料夾，因為當專案越來越多，只會降低整體運作的效能。</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">folders</span><span class="pi">:</span>  
+    <span class="pi">-</span> <span class="na">map</span><span class="pi">:</span>  <span class="s">~/code/project1</span> 
+      <span class="na">to</span><span class="pi">:</span>  <span class="s">/home/vagrant/project1</span> 
+	  
+    <span class="pi">-</span> <span class="na">map</span><span class="pi">:</span>  <span class="s">~/code/project2</span> 
+      <span class="na">to</span><span class="pi">:</span>  <span class="s">/home/vagrant/project2</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>Tips. 使用 Homestead 時，千萬不要使用<code class="highlighter-rouge">.</code> (當前目錄)，這樣做會讓 Vagrant 抓不到，設定時容易噴錯。</p>
+</blockquote>
+
+<p>若要打開 <a href="https://www.vagrantup.com/docs/synced-folders/nfs.html">NFS</a> 我們可以加上設定。</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">folders</span><span class="pi">:</span>  
+    <span class="pi">-</span> <span class="na">map</span><span class="pi">:</span>  <span class="s">~/code/project1</span> 
+      <span class="na">to</span><span class="pi">:</span>  <span class="s">/home/vagrant/project1</span> 
+      <span class="na">type</span><span class="pi">:</span>  <span class="s2">"</span><span class="s">nfs"</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>Tips. 使用 NFS 應額外加上 <a href="https://github.com/winnfsd/vagrant-winnfsd">vagrant-winnfsd</a> Plugin，他能夠幫我們處理權限問題。</p>
+</blockquote>
+
+<p>我們也可以用 <code class="highlighter-rouge">options</code> 來設定整體 Vagrant 的 <a href="https://www.vagrantup.com/docs/synced-folders/basic_usage.html">共享目錄</a> 能支援的所有選項。</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">folders</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">map</span><span class="pi">:</span> <span class="s">~/code/project1</span>
+      <span class="na">to</span><span class="pi">:</span> <span class="s">/home/vagrant/project1</span>
+      <span class="na">type</span><span class="pi">:</span> <span class="s2">"</span><span class="s">rsync"</span>
+      <span class="na">options</span><span class="pi">:</span>
+          <span class="na">rsync__args</span><span class="pi">:</span> <span class="pi">[</span><span class="s2">"</span><span class="s">--verbose"</span><span class="pi">,</span> <span class="s2">"</span><span class="s">--archive"</span><span class="pi">,</span> <span class="s2">"</span><span class="s">--delete"</span><span class="pi">,</span> <span class="s2">"</span><span class="s">-zz"</span><span class="pi">]</span>
+          <span class="na">rsync__exclude</span><span class="pi">:</span> <span class="pi">[</span><span class="s2">"</span><span class="s">node_modules"</span><span class="pi">]</span>
+</code></pre></div></div>
+<h4 id="設定-nginx-站">設定 Nginx 站</h4>
+<p><code class="highlighter-rouge">Homestead.yaml</code>中的<code class="highlighter-rouge">sites</code> 可以直接幫我們對應一個域名，不過這只有本機端能解析，跟 <code class="highlighter-rouge">folders</code> 做法一樣，可以無限對應。</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">sites</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">map</span><span class="pi">:</span> <span class="s">homestead.test</span>
+      <span class="na">to</span><span class="pi">:</span> <span class="s">/home/vagrant/project1/public</span>
+</code></pre></div></div>
+<p>如果啟動 VM 後有修改 sites，一定要 <code class="highlighter-rouge">vagrant reload --provision</code> 來重新設定Nginx。</p>
+
+<blockquote>
+  <p>Tips. 若 provision 失敗或有問題，<code class="highlighter-rouge">vagrant destroy &amp;&amp; vagrant up</code> 來重新建構虛擬機就好了。</p>
+</blockquote>
+
+<h4 id="主機名稱解析">主機名稱解析</h4>
+<p>Homestead 是利用 <code class="highlighter-rouge">mDNS</code> 來發布域名，如果在 <code class="highlighter-rouge">Homestead.yaml</code> 有設定 <code class="highlighter-rouge">hostname: homestead</code> 那主機名稱會是 <code class="highlighter-rouge">homestead.local</code>，MacOS、iOS 和 Linux 系統有支援 <code class="highlighter-rouge">mDNS</code>，Windows 需要額外安裝 <a href="https://support.apple.com/kb/DL999?viewlocale=zh_CN&amp;locale=en_US">Bonjour Print Services for Windows</a>。</p>
+
+<p>如果一個 Homestead 上有很多站點，可以將域名添加到 <code class="highlighter-rouge">hosts</code> 檔案中，他會幫我們將請求重新定位到虛擬機，Mac / Linux 中，檔案位在 <code class="highlighter-rouge">/etc/hosts</code>，Windows 則是在 <code class="highlighter-rouge">C:\Windows\System32\drivers\etc\hosts</code>，我們用 <code class="highlighter-rouge">homestead.test</code> 為例子，添加到 hosts 中。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#請確認與[Homestead.yaml]上設定的[sites]一致。</span>
+192.168.10.10  homestead.test	<span class="c">#http://homestead.test</span>
+</code></pre></div></div>
+<h4 id="啟動-vagrant-虛擬機">啟動 Vagrant 虛擬機</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#建立VM</span>
+vagrant up
+
+<span class="c">#刪除VM</span>
+vagrant destroy	<span class="c">#[--force]可以強制刪除</span>
+
+<span class="c">#VM預設 Account / password 為 vagrant / vagrant</span>
+</code></pre></div></div>
+
+<h4 id="針對項目安裝">針對項目安裝</h4>
+
+<p>除了全域安裝，並且在每個項目中共享 <code class="highlighter-rouge">Homestead.yaml</code> 設定，也可以把 Homestead 裝在每個不同的項目中，只需要將 <code class="highlighter-rouge">vagrantfile</code> 裝在目錄中。只需要進到該目錄並執行 <code class="highlighter-rouge">vagrant up</code> 就可以擁有相同的開發環境。</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#要將 Homestead 直接安裝到目錄中，需要執行以下指令。</span>
+<span class="nx">composer</span> <span class="k">require</span> <span class="nx">laravel</span><span class="o">/</span><span class="nx">homestead</span> <span class="o">--</span><span class="nx">dev</span>
+</code></pre></div></div>
+<p>安裝之後需要使用 <code class="highlighter-rouge">make</code> 來產生 <code class="highlighter-rouge">Vagrantfile</code> 和 <code class="highlighter-rouge">Homestead.yaml</code>，它會自動配置好 <code class="highlighter-rouge">sites</code> 和 <code class="highlighter-rouge">folders</code>。</p>
+
+<p>Mac / Linux</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">php</span> <span class="nx">vendor</span><span class="o">/</span><span class="nx">bin</span><span class="o">/</span><span class="nx">homestead</span> <span class="nx">make</span>
+</code></pre></div></div>
+<p>Windows</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">vendor</span><span class="err">\</span><span class="nx">\bin</span><span class="err">\</span><span class="nx">\homestead</span> <span class="nx">make</span>
+</code></pre></div></div>
+<p>接下來就可以在相同域名下連結到這個server。</p>
+
+<h4 id="安裝可選功能">安裝可選功能</h4>
+<p><code class="highlighter-rouge">Homestead.yaml</code> 中可以使用 <code class="highlighter-rouge">features</code> 選項來啟用各項尚未啟用的功能。</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">features</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">blackfire</span><span class="pi">:</span>
+        <span class="na">server_id</span><span class="pi">:</span> <span class="s2">"</span><span class="s">server_id"</span>
+        <span class="na">server_token</span><span class="pi">:</span> <span class="s2">"</span><span class="s">server_value"</span>
+        <span class="na">client_id</span><span class="pi">:</span> <span class="s2">"</span><span class="s">client_id"</span>
+        <span class="na">client_token</span><span class="pi">:</span> <span class="s2">"</span><span class="s">client_value"</span>
+    <span class="pi">-</span> <span class="na">cassandra</span><span class="pi">:</span> <span class="no">true</span>
+    <span class="pi">-</span> <span class="na">chronograf</span><span class="pi">:</span> <span class="no">true</span>
+    <span class="pi">-</span> <span class="na">couchdb</span><span class="pi">:</span> <span class="no">true</span>
+    <span class="pi">-</span> <span class="na">crystal</span><span class="pi">:</span> <span class="no">true</span>
+    <span class="pi">-</span> <span class="na">docker</span><span class="pi">:</span> <span class="no">true</span>
+    <span class="pi">-</span> <span class="na">elasticsearch</span><span class="pi">:</span>
+        <span class="na">version</span><span class="pi">:</span> <span class="m">7</span>
+    <span class="pi">-</span> <span class="na">gearman</span><span class="pi">:</span> <span class="no">true</span>
+    <span class="pi">-</span> <span class="na">golang</span><span class="pi">:</span> <span class="no">true</span>
+    <span class="pi">-</span> <span class="na">grafana</span><span class="pi">:</span> <span class="no">true</span>
+    <span class="pi">-</span> <span class="na">influxdb</span><span class="pi">:</span> <span class="no">true</span>
+    <span class="pi">-</span> <span class="na">mariadb</span><span class="pi">:</span> <span class="no">true</span>
+    <span class="pi">-</span> <span class="na">minio</span><span class="pi">:</span> <span class="no">true</span>
+    <span class="pi">-</span> <span class="na">mongodb</span><span class="pi">:</span> <span class="no">true</span>
+    <span class="pi">-</span> <span class="na">mysql8</span><span class="pi">:</span> <span class="no">true</span>
+    <span class="pi">-</span> <span class="na">neo4j</span><span class="pi">:</span> <span class="no">true</span>
+    <span class="pi">-</span> <span class="na">ohmyzsh</span><span class="pi">:</span> <span class="no">true</span>
+    <span class="pi">-</span> <span class="na">openresty</span><span class="pi">:</span> <span class="no">true</span>
+    <span class="pi">-</span> <span class="na">pm2</span><span class="pi">:</span> <span class="no">true</span>
+    <span class="pi">-</span> <span class="na">python</span><span class="pi">:</span> <span class="no">true</span>
+    <span class="pi">-</span> <span class="na">rabbitmq</span><span class="pi">:</span> <span class="no">true</span>
+    <span class="pi">-</span> <span class="na">solr</span><span class="pi">:</span> <span class="no">true</span>
+    <span class="pi">-</span> <span class="na">webdriver</span><span class="pi">:</span> <span class="no">true</span>
+</code></pre></div></div>
+
+<p><a href="https://laravel.com/docs/6.x/homestead">詳細說明請參考原出處</a></p>
+
+<h4 id="aliases-別名">Aliases 別名</h4>
+<p>想為機器添加	Bash 別名，編輯 <code class="highlighter-rouge">Homestead/aliases</code> 檔案。</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">alias</span> <span class="nx">c</span><span class="o">=</span><span class="s1">'clear'</span>
+<span class="nx">alias</span> <span class="o">..=</span><span class="s1">'cd ..'</span>
+</code></pre></div></div>
+<p>修改後執行 <code class="highlighter-rouge">vagrant reload --provision</code> 使 <code class="highlighter-rouge">aliases</code> 檔案生效。</p>
+
+<h2 id="日常使用">日常使用</h2>
+<h3 id="隨時執行-vagrant-up">隨時執行 <code class="highlighter-rouge">vagrant up</code></h3>
+<p>專案開發的過程中，可能會需要多次的使用 <code class="highlighter-rouge">vagrant up</code>。但總不能每次打開終端機，都要先 cd 一大堆路徑才能開始工作吧。依據不同系統，有不同的方式。</p>
+<h4 id="mac--linux">Mac / Linux</h4>
+<p>修改 Bash( <code class="highlighter-rouge">~/.bash_profile</code> )</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">function</span>  <span class="nf">homestead</span><span class="p">()</span>  <span class="p">{</span>  
+	<span class="p">(</span> <span class="nx">cd</span> <span class="o">~/</span><span class="nx">Homestead</span> <span class="o">&amp;&amp;</span> <span class="nx">vagrant</span> <span class="err">$</span><span class="o">*</span>  <span class="p">)</span>  <span class="c1"># ~/Homestead 的位置請依據個人的狀況填寫</span>
+<span class="p">}</span>
+<span class="c1">#如此一來就可以在任何時候使用 homestead up / homestead ssh 等指令</span>
+</code></pre></div></div>
+<h4 id="windows">Windows</h4>
+<p>首先建立<code class="highlighter-rouge">homestead.bat</code>。</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">@</span><span class="k">echo</span> <span class="nx">off</span>
+
+<span class="nx">set</span> <span class="nx">cwd</span><span class="o">=%</span><span class="nx">cd</span><span class="o">%</span>
+<span class="nx">set</span> <span class="nx">homesteadVagrant</span><span class="o">=</span><span class="nx">C</span><span class="o">:</span><span class="nx">\Homestead</span>
+
+<span class="nx">cd</span> <span class="o">/</span><span class="nx">d</span> <span class="o">%</span><span class="nx">homesteadVagrant</span><span class="o">%</span> <span class="o">&amp;&amp;</span> <span class="nx">vagrant</span> <span class="o">%*</span>
+<span class="nx">cd</span> <span class="o">/</span><span class="nx">d</span> <span class="o">%</span><span class="nx">cwd</span><span class="o">%</span>
+
+<span class="nx">set</span> <span class="nx">cwd</span><span class="o">=</span>
+<span class="nx">set</span> <span class="nx">homesteadVagrant</span><span class="o">=</span>
+</code></pre></div></div>
+<p>修正<code class="highlighter-rouge">C:\Homestead</code> 路徑為真實路徑，並且將檔案加入<code class="highlighter-rouge">PATH</code> ( <a href="https://www.java.com/zh_TW/download/help/path.xml">PATH在哪裡</a> ) 。</p>
+
+<h3 id="用-ssh-連接">用 ssh 連接</h3>
+<p><code class="highlighter-rouge">vagrant ssh</code></p>
+
+<h3 id="db-連接">DB 連接</h3>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>127.0.0.1:33060 // MySQL
+
+127.0.0.1:54320 // PostgreSQL
+</code></pre></div></div>
+<p>Account：<code class="highlighter-rouge">homestead</code>
+Password：<code class="highlighter-rouge">secret</code></p>
+
+<blockquote>
+  <p>本機連結的時後才用這些 port，Laravel 本身在運作的時候還是使用 3306 / 5432 port。</p>
+</blockquote>
+
+<h3 id="備份-db">備份 DB</h3>
+<h3 id="db-快照">DB 快照</h3>
+<h3 id="添加站點">添加站點</h3>
+<h3 id="站點類型">站點類型</h3>
+<p>我們可以很快地增加一個非 Laravel 的站點。<code class="highlighter-rouge">apache</code>、<code class="highlighter-rouge">apigility</code>、<code class="highlighter-rouge">expressive</code>、<code class="highlighter-rouge">laravel</code> (the default)、<code class="highlighter-rouge">proxy</code>、<code class="highlighter-rouge">silverstripe</code>、<code class="highlighter-rouge">statamic</code>、<code class="highlighter-rouge">symfony2</code>、<code class="highlighter-rouge">symfony4</code>、<code class="highlighter-rouge">zf</code>。</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">sites</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">map</span><span class="pi">:</span> <span class="s">symfony2.test</span>
+      <span class="na">to</span><span class="pi">:</span> <span class="s">/home/vagrant/my-symfony-project/web</span>
+      <span class="na">type</span><span class="pi">:</span> <span class="s2">"</span><span class="s">symfony2"</span>
+</code></pre></div></div>
+<h3 id="站點參數">站點參數</h3>
+<p><code class="highlighter-rouge">params</code> 可以增加額外的 Nginx <code class="highlighter-rouge">fastcgi_param</code> 值至站點。比如：<code class="highlighter-rouge">FOO</code> =&gt; <code class="highlighter-rouge">BAR</code></p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">sites</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">map</span><span class="pi">:</span> <span class="s">homestead.test</span>
+      <span class="na">to</span><span class="pi">:</span> <span class="s">/home/vagrant/project1/public</span>
+      <span class="na">params</span><span class="pi">:</span>
+          <span class="pi">-</span> <span class="na">key</span><span class="pi">:</span> <span class="s">FOO</span>
+            <span class="na">value</span><span class="pi">:</span> <span class="s">BAR</span>
+</code></pre></div></div>
+<h3 id="環境變數">環境變數</h3>
+<p><code class="highlighter-rouge">Homestead.yaml</code> 中新增全域變數。</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">variables</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">key</span><span class="pi">:</span> <span class="s">APP_ENV</span>
+      <span class="na">value</span><span class="pi">:</span> <span class="s">local</span>
+    <span class="pi">-</span> <span class="na">key</span><span class="pi">:</span> <span class="s">FOO</span>
+      <span class="na">value</span><span class="pi">:</span> <span class="s">bar</span>
+</code></pre></div></div>
+
+<p>其餘項目請參考<a href="https://laravel.com/docs/6.x/homestead">原文</a></p>
+
+<h2 id="補充">補充</h2>
+<p>由於上述所有事情單純只是架設 server，還記得我們剛剛在 <code class="highlighter-rouge">sites</code> 有指定位置嗎，在本機到該位置依照前幾天的安裝laravel的方式，裝一次在該目錄中，並重新指定位置到 <code class="highlighter-rouge">public/</code> 就可以囉。</p>
+:ET
