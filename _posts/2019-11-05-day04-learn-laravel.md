@@ -360,7 +360,8 @@ Route::fallback(function () {
     //
 });
 ```
-> Tips. \
+
+> Tips. \\
 > fallback route 應該要是放在 `web.php` 中的最後一個 route。
 
 ## Form method 偽造

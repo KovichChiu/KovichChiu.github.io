@@ -1,4 +1,4 @@
-I",�<p>Laravel 路由 
+I"-�<p>Laravel 路由 
 <!-- more --></p>
 
 <h1 id="routing">Routing</h1>
@@ -360,6 +360,7 @@
     <span class="c1">//</span>
 <span class="p">});</span>
 </code></pre></div></div>
+
 <blockquote>
   <p>Tips. <br />
 fallback route 應該要是放在 <code class="highlighter-rouge">web.php</code> 中的最後一個 route。</p>

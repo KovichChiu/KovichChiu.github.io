@@ -1,0 +1,128 @@
+I"�<p>連結資料庫的程式碼
+<!-- more --></p>
+
+<h1 id="連結-mysql-資料庫">連結 MySQL 資料庫</h1>
+
+<p>重點摘要:</p>
+<ul id="markdown-toc">
+  <li><a href="#連結-mysql-資料庫" id="markdown-toc-連結-mysql-資料庫">連結 MySQL 資料庫</a></li>
+</ul>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;?php</span>
+
+<span class="cm">/*
+ * 給出連結資料庫的基本資料
+ */</span>
+<span class="nv">$DBUSER</span> <span class="o">=</span> <span class="s2">"user"</span><span class="p">;</span>        <span class="c1">//資料庫登入帳號</span>
+<span class="nv">$DBPASSWD</span> <span class="o">=</span> <span class="s2">"password"</span><span class="p">;</span>  <span class="c1">//資料庫登入密碼</span>
+<span class="nv">$DBNAME</span> <span class="o">=</span> <span class="s2">"db"</span><span class="p">;</span>          <span class="c1">//資料庫名稱</span>
+<span class="nv">$DBHOST</span> <span class="o">=</span> <span class="s2">"localhost"</span><span class="p">;</span>   <span class="c1">//資料庫位置</span>
+
+<span class="cm">/*
+ * 設定連線指令並給值
+ * mysqli_connect( "位置", "ACCOUNT", "PASSWORD")
+ */</span>
+<span class="nv">$conn</span> <span class="o">=</span> <span class="nb">mysqli_connect</span><span class="p">(</span><span class="nv">$DBHOST</span><span class="p">,</span> <span class="nv">$DBUSER</span><span class="p">,</span> <span class="nv">$DBPASSWD</span><span class="p">);</span>
+
+<span class="cm">/*
+ * 測試資料庫連結
+ * 若 $conn 為 false，則 empty(false) = true;
+ */</span>
+<span class="k">if</span> <span class="p">(</span><span class="k">empty</span><span class="p">(</span><span class="nv">$conn</span><span class="p">))</span> <span class="p">{</span>
+    <span class="k">print</span> <span class="nx">mysqli_error</span><span class="p">(</span><span class="nv">$conn</span><span class="p">);</span>
+    <span class="k">die</span> <span class="p">(</span><span class="s2">"無法連結資料庫"</span><span class="p">);</span>
+    <span class="k">exit</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cm">/*
+ * 判斷可否選擇資料庫
+ * mysqli_select_db("連線指令", "資料庫名稱")
+ */</span>
+<span class="k">if</span><span class="p">(</span> <span class="o">!</span><span class="nx">mysqli_select_db</span><span class="p">(</span><span class="nv">$conn</span><span class="p">,</span> <span class="nv">$DBNAME</span><span class="p">))</span> <span class="p">{</span>
+    <span class="k">die</span> <span class="p">(</span><span class="s2">"無法選擇資料庫"</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="nx">mysqli_query</span><span class="p">(</span> <span class="nv">$conn</span><span class="p">,</span> <span class="s2">"SET NAMES 'utf8'"</span><span class="p">);</span> <span class="c1">//設定連線編碼</span>
+
+<span class="cm">/*
+ * 取得資料
+ * "SQL語法"可用各式語法(長度不限)取代
+ */</span>
+<span class="nv">$sql</span> <span class="o">=</span><span class="s2">"SQL語法"</span><span class="p">;</span>
+<span class="nv">$result</span> <span class="o">=</span> <span class="nx">mysqli_query</span><span class="p">(</span><span class="nv">$conn</span><span class="p">,</span> <span class="nv">$sql</span><span class="p">);</span>
+
+<span class="cm">/*
+ * 取出資料
+ * 取回行數  mysqli_num_rows($conn, $result)     可得到資料有幾筆
+ * 取回資料  mysqli_fetch_array("SQL語法", 模式)  可撈得依據語法所得到的資料
+ * 模式：
+ * MYSQLI_NUM
+ * MYSQLI_ASSOC
+ * MYSQLI_BOTH
+ */</span>
+<span class="k">while</span> <span class="p">(</span><span class="nv">$row</span> <span class="o">=</span> <span class="nx">mysqli_fetch_array</span><span class="p">(</span><span class="nv">$result</span><span class="p">,</span> <span class="nx">MYSQLI_NUM</span><span class="p">))</span> <span class="p">{</span>
+    <span class="nb">print_r</span><span class="p">(</span> <span class="nv">$row</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="cm">/*
+Array
+(
+    [0] =&gt; A123456789
+    [1] =&gt; 1234
+    [2] =&gt; 李小美
+)
+*/</span>
+<span class="k">while</span> <span class="p">(</span><span class="nv">$row</span> <span class="o">=</span> <span class="nx">mysqli_fetch_array</span><span class="p">(</span><span class="nv">$result</span><span class="p">,</span> <span class="nx">MYSQLI_ASSOC</span><span class="p">))</span> <span class="p">{</span>
+    <span class="nb">print_r</span><span class="p">(</span> <span class="nv">$row</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="cm">/*
+Array
+(
+    [id] =&gt; A123456789
+    [pass] =&gt; 1234
+    [name] =&gt; 李小美
+)
+*/</span>
+<span class="k">while</span> <span class="p">(</span><span class="nv">$row</span> <span class="o">=</span> <span class="nx">mysqli_fetch_array</span><span class="p">(</span><span class="nv">$result</span><span class="p">,</span> <span class="nx">MYSQLI_BOTH</span><span class="p">))</span> <span class="p">{</span>
+    <span class="nb">print_r</span><span class="p">(</span> <span class="nv">$row</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="cm">/*
+Array
+(
+    [0] =&gt; A123456789
+    [id] =&gt; A123456789
+    [1] =&gt; 1234
+    [pass] =&gt; 1234
+    [2] =&gt; 李小美
+    [name] =&gt; 李小美
+)
+*/</span>
+
+<span class="cm">/*
+ * 取回物件形態資料
+ * mysqli_fetch_object("SQL語法")
+ */</span>
+<span class="k">while</span><span class="p">(</span><span class="nv">$obj</span> <span class="o">=</span> <span class="nx">mysqli_fetch_object</span><span class="p">(</span><span class="nv">$result</span><span class="p">)){</span>
+    <span class="k">print</span> <span class="p">(</span><span class="nv">$obj</span><span class="o">-&gt;</span><span class="na">id</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="cm">/*
+ * 取回最後一筆異動的索引
+ * mysqli_insert_id($conn)
+ * 要注意的情況：
+ * - 一定要有一個欄位有 auto_increment 屬性，否則回傳0
+ * - 一定之前要有insert或update操作，否則回傳0
+ */</span>
+<span class="nv">$last_id</span><span class="o">=</span><span class="nx">mysqli_insert_id</span><span class="p">(</span><span class="nv">$conn</span><span class="p">);</span>
+
+<span class="cm">/*
+ * 關閉連線
+ *
+ * 釋放記憶體
+ * mysqli_free_result ( $result )
+ *
+ * 關閉連線
+ * mysqli_close($conn);
+ */</span>
+<span class="nx">mysqli_free_result</span> <span class="p">(</span> <span class="nv">$result</span> <span class="p">);</span>
+<span class="nx">mysqli_close</span><span class="p">(</span><span class="nv">$conn</span><span class="p">);</span>
+</code></pre></div></div>
+:ET
