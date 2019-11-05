@@ -1,0 +1,43 @@
+I"x<p>Ajax 用法與詳解
+<!-- more --></p>
+
+<h1 id="ajax">Ajax</h1>
+
+<p>重點摘要:</p>
+<ul id="markdown-toc">
+  <li><a href="#ajax" id="markdown-toc-ajax">Ajax</a></li>
+</ul>
+<hr />
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">({</span>
+    <span class="na">type</span><span class="p">:</span> <span class="dl">"</span><span class="s2">POST</span><span class="dl">"</span><span class="p">,</span>
+    <span class="na">url</span><span class="p">:</span> <span class="dl">"</span><span class="s2">php/orderTicket.buy.php</span><span class="dl">"</span><span class="p">,</span>
+    <span class="c1">//async=非同步，false即為同步(這關沒過後面別想動)，預設為true，目的要讓取資料的同時其他工作可以先做。</span>
+    <span class="na">async</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span> 
+    <span class="na">data</span><span class="p">:</span> <span class="p">{</span>  <span class="c1">//必須為Key/Value格式</span>
+                <span class="dl">"</span><span class="s2">u_id</span><span class="dl">"</span><span class="p">:</span> <span class="nx">u_id</span><span class="p">,</span>  
+                <span class="dl">"</span><span class="s2">u_acc</span><span class="dl">"</span><span class="p">:</span> <span class="nx">u_acc</span><span class="p">,</span>  
+                <span class="dl">"</span><span class="s2">u_name</span><span class="dl">"</span><span class="p">:</span> <span class="nx">u_name</span><span class="p">,</span>  
+                <span class="dl">"</span><span class="s2">t_id</span><span class="dl">"</span><span class="p">:</span> <span class="nx">tid</span>  
+    <span class="p">},</span> 
+    <span class="c1">//datatype</span>
+    <span class="c1">//預期Server傳回的資料類型，如果沒指定，jQuery會根據HTTP MIME Type自動選擇以responseXML或responseText傳入你的success callback。</span>
+    <span class="c1">//xml：傳回可用jQuery處理的XML。</span>
+    <span class="c1">//html：傳回HTML，包含script tags。</span>
+    <span class="c1">//script：傳回可執行的JavaScript。</span>
+    <span class="c1">//json：傳回JSON。</span>
+    <span class="c1">//jsonp：JSONP 格式。在URL加上?callback=?參數，並在Server端配合送回此jsonp callback。</span>
+    <span class="c1">//text：傳回純文字字串。</span>
+    <span class="na">dataType</span><span class="p">:</span> <span class="dl">"</span><span class="s2">text</span><span class="dl">"</span><span class="p">,</span>
+    <span class="na">success</span><span class="p">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">result</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">//functions</span>
+        <span class="nx">$</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">result</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">key</span><span class="p">,</span> <span class="nx">value</span><span class="p">){</span>
+            <span class="c1">//functions</span>
+        <span class="p">});</span>
+    <span class="p">},</span>
+    <span class="na">error</span><span class="p">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">result</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">//functions</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+</code></pre></div></div>
+:ET

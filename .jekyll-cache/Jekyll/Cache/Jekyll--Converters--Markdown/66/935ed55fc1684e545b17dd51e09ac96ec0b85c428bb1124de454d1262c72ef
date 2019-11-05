@@ -1,0 +1,44 @@
+I"�<p>Datatables 用法與詳解
+<!-- more --></p>
+
+<h1 id="datatables">Datatables</h1>
+
+<p>重點摘要:</p>
+<ul id="markdown-toc">
+  <li><a href="#datatables" id="markdown-toc-datatables">Datatables</a></li>
+</ul>
+<hr />
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">&lt;!-- DataTables --&gt;</span>
+<span class="c">&lt;!-- MDBootstrap Datatables  --&gt;</span>
+<span class="nt">&lt;link</span> <span class="na">href=</span><span class="s">"css/datatables.min.css"</span> <span class="na">rel=</span><span class="s">"stylesheet"</span><span class="nt">&gt;</span>
+<span class="c">&lt;!-- MDBootstrap Datatables  --&gt;</span>
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"js/datatables.min.js"</span> <span class="na">type=</span><span class="s">"text/javascript"</span><span class="nt">&gt;&lt;/script&gt;</span>
+
+<span class="nt">&lt;script&gt;</span>
+    <span class="nx">$</span><span class="p">(</span><span class="dl">'</span><span class="s1">#ID</span><span class="dl">'</span><span class="p">).</span><span class="nx">DataTable</span><span class="p">({</span>
+        <span class="dl">"</span><span class="s2">language</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>  
+            <span class="dl">"</span><span class="s2">processing</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">處理中...</span><span class="dl">"</span><span class="p">,</span>  
+            <span class="dl">"</span><span class="s2">loadingRecords</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">載入中...</span><span class="dl">"</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">lengthMenu</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">顯示 _MENU_ 項結果</span><span class="dl">"</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">zeroRecords</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">沒有符合的結果</span><span class="dl">"</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">info</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">顯示第 _START_ 至 _END_ 項結果，共 _TOTAL_ 項</span><span class="dl">"</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">infoEmpty</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">顯示第 0 至 0 項結果，共 0 項</span><span class="dl">"</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">infoFiltered</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">(從 _MAX_ 項結果中過濾)</span><span class="dl">"</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">infoPostFix</span><span class="dl">"</span><span class="p">:</span> <span class="dl">""</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">search</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">搜尋:</span><span class="dl">"</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">paginate</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>
+                <span class="dl">"</span><span class="s2">first</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">第一頁</span><span class="dl">"</span><span class="p">,</span>
+                <span class="dl">"</span><span class="s2">previous</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">上一頁</span><span class="dl">"</span><span class="p">,</span>
+                <span class="dl">"</span><span class="s2">next</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">下一頁</span><span class="dl">"</span><span class="p">,</span>
+                <span class="dl">"</span><span class="s2">last</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">最後一頁</span><span class="dl">"</span>
+            <span class="p">},</span>
+            <span class="dl">"</span><span class="s2">aria</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>
+                <span class="dl">"</span><span class="s2">sortAscending</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">: 升冪排列</span><span class="dl">"</span><span class="p">,</span>
+                <span class="dl">"</span><span class="s2">sortDescending</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">: 降冪排列</span><span class="dl">"</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">});</span>
+<span class="nt">&lt;/script&gt;</span>
+</code></pre></div></div>
+:ET
