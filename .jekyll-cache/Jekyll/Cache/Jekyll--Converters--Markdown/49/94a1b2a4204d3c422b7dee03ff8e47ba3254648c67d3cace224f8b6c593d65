@@ -1,0 +1,587 @@
+I"S_<p>各種布林值的差異
+<!-- more --></p>
+
+<h1 id="判斷結果列表">判斷結果列表</h1>
+
+<p>資料來源：<a href="https://www.php.net/manual/en/types.comparisons.php">PHP type comparison tables</a></p>
+
+<p>重點摘要:</p>
+<ul id="markdown-toc">
+  <li><a href="#判斷結果列表" id="markdown-toc-判斷結果列表">判斷結果列表</a>    <ul>
+      <li><a href="#比較-x-在各函數中的結果" id="markdown-toc-比較-x-在各函數中的結果">比較 $x 在各函數中的結果</a></li>
+      <li><a href="#用--寬鬆的比較" id="markdown-toc-用--寬鬆的比較">用 == 寬鬆的比較</a></li>
+      <li><a href="#用--嚴格的比較" id="markdown-toc-用--嚴格的比較">用 === 嚴格的比較</a></li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="比較-x-在各函數中的結果">比較 $x 在各函數中的結果</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: right">Expression</th>
+      <th style="text-align: center">gettype()</th>
+      <th style="text-align: center">empty()</th>
+      <th style="text-align: center">is_null()</th>
+      <th style="text-align: center">isset()</th>
+      <th style="text-align: center">boolean : if($x)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: right"><code class="highlighter-rouge">$x = "";</code></td>
+      <td style="text-align: center">string</td>
+      <td style="text-align: center">TRUE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">TRUE</td>
+      <td style="text-align: center">FALSE</td>
+    </tr>
+    <tr>
+      <td style="text-align: right"><code class="highlighter-rouge">$x = null;</code></td>
+      <td style="text-align: center">NULL</td>
+      <td style="text-align: center">TRUE</td>
+      <td style="text-align: center">TRUE</td>
+      <td style="text-align: center">FLASE</td>
+      <td style="text-align: center">FALSE</td>
+    </tr>
+    <tr>
+      <td style="text-align: right"><code class="highlighter-rouge">var $x;</code></td>
+      <td style="text-align: center">NULL</td>
+      <td style="text-align: center">TRUE</td>
+      <td style="text-align: center">TRUE</td>
+      <td style="text-align: center">FLASE</td>
+      <td style="text-align: center">FALSE</td>
+    </tr>
+    <tr>
+      <td style="text-align: right"><code class="highlighter-rouge">$x is undefined</code></td>
+      <td style="text-align: center">NULL</td>
+      <td style="text-align: center">TRUE</td>
+      <td style="text-align: center">TRUE</td>
+      <td style="text-align: center">FLASE</td>
+      <td style="text-align: center">FALSE</td>
+    </tr>
+    <tr>
+      <td style="text-align: right"><code class="highlighter-rouge">$x = array();</code></td>
+      <td style="text-align: center">array</td>
+      <td style="text-align: center">TRUE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">TRUE</td>
+      <td style="text-align: center">FALSE</td>
+    </tr>
+    <tr>
+      <td style="text-align: right"><code class="highlighter-rouge">$x = array('a', 'b');</code></td>
+      <td style="text-align: center">array</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">TRUE</td>
+      <td style="text-align: center">TRUE</td>
+    </tr>
+    <tr>
+      <td style="text-align: right"><code class="highlighter-rouge">$x = false;</code></td>
+      <td style="text-align: center">boolean</td>
+      <td style="text-align: center">TRUE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">TRUE</td>
+      <td style="text-align: center">FALSE</td>
+    </tr>
+    <tr>
+      <td style="text-align: right"><code class="highlighter-rouge">$x = true;</code></td>
+      <td style="text-align: center">boolean</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">TRUE</td>
+      <td style="text-align: center">TRUE</td>
+    </tr>
+    <tr>
+      <td style="text-align: right"><code class="highlighter-rouge">$x = 1;</code></td>
+      <td style="text-align: center">integer</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">TRUE</td>
+      <td style="text-align: center">TRUE</td>
+    </tr>
+    <tr>
+      <td style="text-align: right"><code class="highlighter-rouge">$x = 42;</code></td>
+      <td style="text-align: center">integer</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">TRUE</td>
+      <td style="text-align: center">TRUE</td>
+    </tr>
+    <tr>
+      <td style="text-align: right"><code class="highlighter-rouge">$x = 0;</code></td>
+      <td style="text-align: center">integer</td>
+      <td style="text-align: center">TRUE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">TRUE</td>
+      <td style="text-align: center">FALSE</td>
+    </tr>
+    <tr>
+      <td style="text-align: right"><code class="highlighter-rouge">$x = -1;</code></td>
+      <td style="text-align: center">integer</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">TRUE</td>
+      <td style="text-align: center">TRUE</td>
+    </tr>
+    <tr>
+      <td style="text-align: right"><code class="highlighter-rouge">$x = "1";</code></td>
+      <td style="text-align: center">string</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">TRUE</td>
+      <td style="text-align: center">TRUE</td>
+    </tr>
+    <tr>
+      <td style="text-align: right"><code class="highlighter-rouge">$x = "0";</code></td>
+      <td style="text-align: center">string</td>
+      <td style="text-align: center">TRUE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">TRUE</td>
+      <td style="text-align: center">FALSE</td>
+    </tr>
+    <tr>
+      <td style="text-align: right"><code class="highlighter-rouge">$x = "-1";</code></td>
+      <td style="text-align: center">string</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">TRUE</td>
+      <td style="text-align: center">TRUE</td>
+    </tr>
+    <tr>
+      <td style="text-align: right"><code class="highlighter-rouge">$x = "php";</code></td>
+      <td style="text-align: center">string</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">TRUE</td>
+      <td style="text-align: center">TRUE</td>
+    </tr>
+    <tr>
+      <td style="text-align: right"><code class="highlighter-rouge">$x = "true";</code></td>
+      <td style="text-align: center">string</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">TRUE</td>
+      <td style="text-align: center">TRUE</td>
+    </tr>
+    <tr>
+      <td style="text-align: right"><code class="highlighter-rouge">$x = "false";</code></td>
+      <td style="text-align: center">string</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">TRUE</td>
+      <td style="text-align: center">TRUE</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="用--寬鬆的比較">用 == 寬鬆的比較</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: right"> </th>
+      <th style="text-align: center">TRUE</th>
+      <th style="text-align: center">FALSE</th>
+      <th style="text-align: center">1</th>
+      <th style="text-align: center">0</th>
+      <th style="text-align: center">-1</th>
+      <th style="text-align: center">“1”</th>
+      <th style="text-align: center">“0”</th>
+      <th style="text-align: center">“-1”</th>
+      <th style="text-align: center">NULL</th>
+      <th style="text-align: center">array()</th>
+      <th style="text-align: center">“php”</th>
+      <th style="text-align: center">””</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: right">TRUE</td>
+      <td style="text-align: center">TRUE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">TRUE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">TRUE</td>
+      <td style="text-align: center">TRUE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">TRUE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">TRUE</td>
+      <td style="text-align: center">FALSE</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">TRUE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">TRUE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">TRUE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">TRUE</td>
+      <td style="text-align: center">TRUE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">TRUE</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">1</td>
+      <td style="text-align: center">TRUE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">TRUE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">TRUE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">0</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">TRUE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">TRUE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">TRUE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">TRUE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">TRUE</td>
+      <td style="text-align: center">TRUE</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">-1</td>
+      <td style="text-align: center">TRUE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">TRUE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">TRUE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">“1”</td>
+      <td style="text-align: center">TRUE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">TRUE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">TRUE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">“0”</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">TRUE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">TRUE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">TRUE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">“-1”</td>
+      <td style="text-align: center">TRUE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">TRUE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">TRUE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">NULL</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">TRUE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">TRUE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">TRUE</td>
+      <td style="text-align: center">TRUE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">TRUE</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">array()</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">TRUE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">TRUE</td>
+      <td style="text-align: center">TRUE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">“php”</td>
+      <td style="text-align: center">TRUE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">TRUE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">TRUE</td>
+      <td style="text-align: center">FALSE</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">””</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">TRUE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">TRUE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">TRUE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">TRUE</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="用--嚴格的比較">用 === 嚴格的比較</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: right"> </th>
+      <th style="text-align: center">TRUE</th>
+      <th style="text-align: center">FALSE</th>
+      <th style="text-align: center">1</th>
+      <th style="text-align: center">0</th>
+      <th style="text-align: center">-1</th>
+      <th style="text-align: center">“1”</th>
+      <th style="text-align: center">“0”</th>
+      <th style="text-align: center">“-1”</th>
+      <th style="text-align: center">NULL</th>
+      <th style="text-align: center">array()</th>
+      <th style="text-align: center">“php”</th>
+      <th style="text-align: center">””</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: right">TRUE</td>
+      <td style="text-align: center">TRUE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">TRUE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">1</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">TRUE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">0</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">TRUE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">-1</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">TRUE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">“1”</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">TRUE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">“0”</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">TRUE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">“-1”</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">TRUE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">NULL</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">TRUE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">array()</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">TRUE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">“php”</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">TRUE</td>
+      <td style="text-align: center">FALSE</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">””</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">FALSE</td>
+      <td style="text-align: center">TRUE</td>
+    </tr>
+  </tbody>
+</table>
+
+:ET
