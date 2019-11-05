@@ -5,7 +5,7 @@ preview: "Install composer in Windows"
 permalink: "/articles/2019-10-30-Install-composer-in-windows"
 date:   2019-10-30 11:50:00 +08:00  
 tags:  
-    - "git"  
+    - "tools"  
 comments: true  
 ---
 
