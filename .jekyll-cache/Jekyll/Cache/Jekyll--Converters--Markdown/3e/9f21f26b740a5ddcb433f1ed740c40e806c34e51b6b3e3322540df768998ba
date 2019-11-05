@@ -1,0 +1,272 @@
+I"�S<p>Laravel Middleware
+<!-- more --></p>
+
+<h1 id="middleware">Middleware</h1>
+<p>重點摘要:</p>
+<ul id="markdown-toc">
+  <li><a href="#middleware" id="markdown-toc-middleware">Middleware</a>    <ul>
+      <li><a href="#介紹" id="markdown-toc-介紹">介紹</a></li>
+      <li><a href="#定義一個-middleware" id="markdown-toc-定義一個-middleware">定義一個 Middleware</a>        <ul>
+          <li><a href="#前置後置-middleware" id="markdown-toc-前置後置-middleware">前置&amp;後置 Middleware</a></li>
+        </ul>
+      </li>
+      <li><a href="#註冊-middleware" id="markdown-toc-註冊-middleware">註冊 Middleware</a>        <ul>
+          <li><a href="#global" id="markdown-toc-global">Global</a></li>
+          <li><a href="#為-route-分配-middleware" id="markdown-toc-為-route-分配-middleware">為 Route 分配 Middleware</a></li>
+          <li><a href="#middleware-groups" id="markdown-toc-middleware-groups">Middleware Groups</a></li>
+          <li><a href="#排序-middleware" id="markdown-toc-排序-middleware">排序 Middleware</a></li>
+        </ul>
+      </li>
+      <li><a href="#middleware-參數" id="markdown-toc-middleware-參數">Middleware 參數</a></li>
+      <li><a href="#terminable-middleware" id="markdown-toc-terminable-middleware">Terminable Middleware</a></li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="介紹">介紹</h2>
+<p>Middleware 提供了一種方便的機制來過濾所有 HTTP 請求。Ex. Laravel 有一個驗證用戶身分的 Middleware 。如果可以通過驗證，將進一步定位到其他 page，反之，重新定位到登入頁面。</p>
+
+<p>當然可以自己編寫其他 Middleware。Laravel 自帶一些 Middleware ，都放在 <code class="highlighter-rouge">app/Http/Middleware/</code> 中。</p>
+
+<h2 id="定義一個-middleware">定義一個 Middleware</h2>
+<p><code class="highlighter-rouge">make:middleware</code> 指令，來建立新的 Middleware。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>php artisan make:middleware CheckAge
+</code></pre></div></div>
+<p>他會在 <code class="highlighter-rouge">app/Http/Middleware/</code> 新增 <code class="highlighter-rouge">CheckAge</code>。在此，我們僅允許 <code class="highlighter-rouge">age</code> 大於200的請求對 Route進行訪位，否則重新定位到 <code class="highlighter-rouge">home</code>。</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;?php</span>
+
+<span class="kn">namespace</span> <span class="nn">App\Http\Middleware</span><span class="p">;</span>
+
+<span class="kn">use</span> <span class="nn">Closure</span><span class="p">;</span>
+
+<span class="kd">class</span> <span class="nc">CheckAge</span>
+<span class="p">{</span>
+    <span class="cd">/**
+     * Handle an incoming request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure  $next
+     * @return mixed
+     */</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">handle</span><span class="p">(</span><span class="nv">$request</span><span class="p">,</span> <span class="nx">Closure</span> <span class="nv">$next</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$request</span><span class="o">-&gt;</span><span class="na">age</span> <span class="o">&lt;=</span> <span class="mi">200</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="nx">redirect</span><span class="p">(</span><span class="s1">'home'</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="nv">$next</span><span class="p">(</span><span class="nv">$request</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>可以將 Middleware 想像成一連串的 HTTP 請求，必須經過才能進入專案層，每層都會檢查。</p>
+
+<blockquote>
+  <p>Tips. <br />
+所有的 Middleware 都是經過 <a href="https://laravel.com/docs/6.x/container">service container</a>(服務容器)，所以可以在 Middleware 設計任何需要的過濾方式。</p>
+</blockquote>
+
+<h3 id="前置後置-middleware">前置&amp;後置 Middleware</h3>
+<p>在處理請求之前：</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;?php</span>
+
+<span class="kn">namespace</span> <span class="nn">App\Http\Middleware</span><span class="p">;</span>
+
+<span class="kn">use</span> <span class="nn">Closure</span><span class="p">;</span>
+
+<span class="kd">class</span> <span class="nc">BeforeMiddleware</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">handle</span><span class="p">(</span><span class="nv">$request</span><span class="p">,</span> <span class="nx">Closure</span> <span class="nv">$next</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// Perform action</span>
+
+        <span class="k">return</span> <span class="nv">$next</span><span class="p">(</span><span class="nv">$request</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>之後：</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;?php</span>
+
+<span class="kn">namespace</span> <span class="nn">App\Http\Middleware</span><span class="p">;</span>
+
+<span class="kn">use</span> <span class="nn">Closure</span><span class="p">;</span>
+
+<span class="kd">class</span> <span class="nc">AfterMiddleware</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">handle</span><span class="p">(</span><span class="nv">$request</span><span class="p">,</span> <span class="nx">Closure</span> <span class="nv">$next</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nv">$response</span> <span class="o">=</span> <span class="nv">$next</span><span class="p">(</span><span class="nv">$request</span><span class="p">);</span>
+
+        <span class="c1">// Perform action</span>
+
+        <span class="k">return</span> <span class="nv">$response</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<h2 id="註冊-middleware">註冊 Middleware</h2>
+<h3 id="global">Global</h3>
+<p>如果要讓 Middleware 處理每個請求，在 <code class="highlighter-rouge">app/Http/Kernel.php</code> 中的 <code class="highlighter-rouge">middleware</code> 列出。</p>
+<h3 id="為-route-分配-middleware">為 Route 分配 Middleware</h3>
+<p>首先，在 <code class="highlighter-rouge">app/Http/Kernel.php</code> 為該 Middleware 新增一個鍵。一般情況下，<code class="highlighter-rouge">routeMiddleware</code> 屬性底下都是 Laravel 內建的 Middleware，自訂的 Middleware 加入 <code class="highlighter-rouge">routeMiddleware</code>，並給他一個鍵。</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Within App\Http\Kernel Class...</span>
+
+<span class="k">protected</span> <span class="nv">$routeMiddleware</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">'auth'</span> <span class="o">=&gt;</span> <span class="nx">\App\Http\Middleware\Authenticate</span><span class="o">::</span><span class="na">class</span><span class="p">,</span>
+    <span class="s1">'auth.basic'</span> <span class="o">=&gt;</span> <span class="nx">\Illuminate\Auth\Middleware\AuthenticateWithBasicAuth</span><span class="o">::</span><span class="na">class</span><span class="p">,</span>
+    <span class="s1">'bindings'</span> <span class="o">=&gt;</span> <span class="nx">\Illuminate\Routing\Middleware\SubstituteBindings</span><span class="o">::</span><span class="na">class</span><span class="p">,</span>
+    <span class="s1">'cache.headers'</span> <span class="o">=&gt;</span> <span class="nx">\Illuminate\Http\Middleware\SetCacheHeaders</span><span class="o">::</span><span class="na">class</span><span class="p">,</span>
+    <span class="s1">'can'</span> <span class="o">=&gt;</span> <span class="nx">\Illuminate\Auth\Middleware\Authorize</span><span class="o">::</span><span class="na">class</span><span class="p">,</span>
+    <span class="s1">'guest'</span> <span class="o">=&gt;</span> <span class="nx">\App\Http\Middleware\RedirectIfAuthenticated</span><span class="o">::</span><span class="na">class</span><span class="p">,</span>
+    <span class="s1">'signed'</span> <span class="o">=&gt;</span> <span class="nx">\Illuminate\Routing\Middleware\ValidateSignature</span><span class="o">::</span><span class="na">class</span><span class="p">,</span>
+    <span class="s1">'throttle'</span> <span class="o">=&gt;</span> <span class="nx">\Illuminate\Routing\Middleware\ThrottleRequests</span><span class="o">::</span><span class="na">class</span><span class="p">,</span>
+    <span class="s1">'verified'</span> <span class="o">=&gt;</span> <span class="nx">\Illuminate\Auth\Middleware\EnsureEmailIsVerified</span><span class="o">::</span><span class="na">class</span><span class="p">,</span>
+<span class="p">];</span>
+</code></pre></div></div>
+<p>只要加入後便可透過 <code class="highlighter-rouge">middleware()</code> 來分配給Route。</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">Route</span><span class="o">::</span><span class="na">get</span><span class="p">(</span><span class="s1">'admin/profile'</span><span class="p">,</span> <span class="k">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="c1">//</span>
+<span class="p">})</span><span class="o">-&gt;</span><span class="na">middleware</span><span class="p">(</span><span class="s1">'auth'</span><span class="p">);</span>
+</code></pre></div></div>
+<p>也可以分配多個 Middleware。</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">Route</span><span class="o">::</span><span class="na">get</span><span class="p">(</span><span class="s1">'/'</span><span class="p">,</span> <span class="k">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="c1">//</span>
+<span class="p">})</span><span class="o">-&gt;</span><span class="na">middleware</span><span class="p">(</span><span class="s1">'first'</span><span class="p">,</span> <span class="s1">'second'</span><span class="p">);</span>
+</code></pre></div></div>
+
+<h3 id="middleware-groups">Middleware Groups</h3>
+<p>用 <code class="highlighter-rouge">Http</code> 的 <code class="highlighter-rouge">$middlewareGroups</code> 把數個 Middleware package成一個 group。</p>
+
+<p>Laravel 內建了可以直接使用的 <code class="highlighter-rouge">web</code> &amp; <code class="highlighter-rouge">api</code>，其中包含 Web UI 和 API 經常會用到的 Middleware Groups。</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cd">/**
+ * The application's route middleware groups.
+ *
+ * @var array
+ */</span>
+<span class="k">protected</span> <span class="nv">$middlewareGroups</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">'web'</span> <span class="o">=&gt;</span> <span class="p">[</span>
+        <span class="nx">\App\Http\Middleware\EncryptCookies</span><span class="o">::</span><span class="na">class</span><span class="p">,</span>
+        <span class="nx">\Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse</span><span class="o">::</span><span class="na">class</span><span class="p">,</span>
+        <span class="nx">\Illuminate\Session\Middleware\StartSession</span><span class="o">::</span><span class="na">class</span><span class="p">,</span>
+        <span class="nx">\Illuminate\View\Middleware\ShareErrorsFromSession</span><span class="o">::</span><span class="na">class</span><span class="p">,</span>
+        <span class="nx">\App\Http\Middleware\VerifyCsrfToken</span><span class="o">::</span><span class="na">class</span><span class="p">,</span>
+        <span class="nx">\Illuminate\Routing\Middleware\SubstituteBindings</span><span class="o">::</span><span class="na">class</span><span class="p">,</span>
+    <span class="p">],</span>
+
+    <span class="s1">'api'</span> <span class="o">=&gt;</span> <span class="p">[</span>
+        <span class="s1">'throttle:60,1'</span><span class="p">,</span>
+        <span class="s1">'auth:api'</span><span class="p">,</span>
+    <span class="p">],</span>
+<span class="p">];</span>
+</code></pre></div></div>
+<p>使用方法如下：</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">Route</span><span class="o">::</span><span class="na">get</span><span class="p">(</span><span class="s1">'/'</span><span class="p">,</span> <span class="k">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="c1">//</span>
+<span class="p">})</span><span class="o">-&gt;</span><span class="na">middleware</span><span class="p">(</span><span class="s1">'web'</span><span class="p">);</span>
+
+<span class="nx">Route</span><span class="o">::</span><span class="na">group</span><span class="p">([</span><span class="s1">'middleware'</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">'web'</span><span class="p">]],</span> <span class="k">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="c1">//</span>
+<span class="p">});</span>
+
+<span class="nx">Route</span><span class="o">::</span><span class="na">middleware</span><span class="p">([</span><span class="s1">'web'</span><span class="p">,</span> <span class="s1">'subscribed'</span><span class="p">])</span><span class="o">-&gt;</span><span class="na">group</span><span class="p">(</span><span class="k">function</span> <span class="p">()</span> <span class="p">{</span> 
+    <span class="c1">//</span>
+<span class="p">});</span>
+</code></pre></div></div>
+<blockquote>
+  <p>Tips. <br />
+<code class="highlighter-rouge">RouteServiceProvider</code> 就有預設給 <code class="highlighter-rouge">routes/web.php</code> 吃到 <code class="highlighter-rouge">web</code> 的設定。</p>
+</blockquote>
+
+<h3 id="排序-middleware">排序 Middleware</h3>
+<p>可以以特定順序要求 Middleware 以給定順序執行。從 <code class="highlighter-rouge">app/Http/Kernel.php</code> 中修改 <code class="highlighter-rouge">$middlewarePriority</code>。</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cd">/**
+ * The priority-sorted list of middleware.
+ *
+ * This forces non-global middleware to always be in the given order.
+ *
+ * @var array
+ */</span>
+<span class="k">protected</span> <span class="nv">$middlewarePriority</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="nx">\Illuminate\Session\Middleware\StartSession</span><span class="o">::</span><span class="na">class</span><span class="p">,</span>
+    <span class="nx">\Illuminate\View\Middleware\ShareErrorsFromSession</span><span class="o">::</span><span class="na">class</span><span class="p">,</span>
+    <span class="nx">\App\Http\Middleware\Authenticate</span><span class="o">::</span><span class="na">class</span><span class="p">,</span>
+    <span class="nx">\Illuminate\Session\Middleware\AuthenticateSession</span><span class="o">::</span><span class="na">class</span><span class="p">,</span>
+    <span class="nx">\Illuminate\Routing\Middleware\SubstituteBindings</span><span class="o">::</span><span class="na">class</span><span class="p">,</span>
+    <span class="nx">\Illuminate\Auth\Middleware\Authorize</span><span class="o">::</span><span class="na">class</span><span class="p">,</span>
+<span class="p">];</span>
+</code></pre></div></div>
+
+<h2 id="middleware-參數">Middleware 參數</h2>
+<p>如果需要在執行操作之前驗證使用者是否符合給定的「角色」，創建 <code class="highlighter-rouge">CheckRole</code> 由它來接受「角色」作為不加參數。</p>
+
+<p>附加的參數應該在 <code class="highlighter-rouge">$next</code> 之後傳遞。</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;?php</span>
+
+<span class="kn">namespace</span> <span class="nn">App\Http\Middleware</span><span class="p">;</span>
+
+<span class="kn">use</span> <span class="nn">Closure</span><span class="p">;</span>
+
+<span class="kd">class</span> <span class="nc">CheckRole</span>
+<span class="p">{</span>
+    <span class="cd">/**
+     * Handle the incoming request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure  $next
+     * @param  string  $role
+     * @return mixed
+     */</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">handle</span><span class="p">(</span><span class="nv">$request</span><span class="p">,</span> <span class="nx">Closure</span> <span class="nv">$next</span><span class="p">,</span> <span class="nv">$role</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nv">$request</span><span class="o">-&gt;</span><span class="na">user</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">hasRole</span><span class="p">(</span><span class="nv">$role</span><span class="p">))</span> <span class="p">{</span>
+            <span class="c1">// Redirect...</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="nv">$next</span><span class="p">(</span><span class="nv">$request</span><span class="p">);</span>
+    <span class="p">}</span>
+
+<span class="p">}</span>
+</code></pre></div></div>
+<p>定義 route 用 <code class="highlighter-rouge">:</code> 來隔開 Middleware  name 和參數，多個就用逗號分開。</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">Route</span><span class="o">::</span><span class="na">put</span><span class="p">(</span><span class="s1">'post/{id}'</span><span class="p">,</span> <span class="k">function</span> <span class="p">(</span><span class="nv">$id</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">//</span>
+<span class="p">})</span><span class="o">-&gt;</span><span class="na">middleware</span><span class="p">(</span><span class="s1">'role:editor'</span><span class="p">);</span>
+</code></pre></div></div>
+<h2 id="terminable-middleware">Terminable Middleware</h2>
+<p>有時候準備好 HTTP 響應之後，還是有一些 Middleware 還要工作。Ex. Laravel 的 <code class="highlighter-rouge">session</code> 會在完全準備好之後，將 session 數據寫入存儲。如果有定義一個 <code class="highlighter-rouge">terminate</code> 方法，並且使用FastCGI，那它就會自動調用。</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;?php</span>
+
+<span class="kn">namespace</span> <span class="nn">Illuminate\Session\Middleware</span><span class="p">;</span>
+
+<span class="kn">use</span> <span class="nn">Closure</span><span class="p">;</span>
+
+<span class="kd">class</span> <span class="nc">StartSession</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">handle</span><span class="p">(</span><span class="nv">$request</span><span class="p">,</span> <span class="nx">Closure</span> <span class="nv">$next</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="nv">$next</span><span class="p">(</span><span class="nv">$request</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">terminate</span><span class="p">(</span><span class="nv">$request</span><span class="p">,</span> <span class="nv">$response</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// Store the session data...</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p><code class="highlighter-rouge">terminate</code> 應該同時接收請求和回應。定義後要將它加入 route list 或  <code class="highlighter-rouge">app/Http/Kernel.php</code> 讓它可以全域使用。</p>
+
+<p>當你在 Middleware 上調用 <code class="highlighter-rouge">terminate</code> 方法的時候， Laravel將從<a href="https://learnku.com/docs/laravel/6.x/container">服務容器</a>中解析出一個新的 Middleware 實例。如果在調用 <code class="highlighter-rouge">handle</code> 和 <code class="highlighter-rouge">terminate</code> 方法的同時使用相同的 Middleware 實例，請使用容器的 <code class="highlighter-rouge">singleton</code> 方法在容器中註冊 Middleware。</p>
+:ET
