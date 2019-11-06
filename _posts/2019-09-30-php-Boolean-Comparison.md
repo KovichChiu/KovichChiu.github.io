@@ -2,8 +2,8 @@
 layout: post      
 title:  "[PHP] Boolean 比較"      
 preview: "[PHP] Boolean Comparison"      
-permalink: "/articles/2019-11-05-php-Boolean-Comparison"    
-date:   2019-11-05 12:30:00 +08:00      
+permalink: "/articles/2019-09-30-php-Boolean-Comparison"    
+date:   2019-09-30 12:30:00 +08:00      
 tags:      
     - "php"      
 comments: true      

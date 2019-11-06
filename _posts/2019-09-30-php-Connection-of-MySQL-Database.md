@@ -2,8 +2,8 @@
 layout: post      
 title:  "[PHP] 連結 MySQL 資料庫"      
 preview: "[PHP] Connection of MySQL Database"      
-permalink: "/articles/2019-11-05-php-Connection-of-MySQL-Database"    
-date:   2019-11-05 17:00:00 +08:00      
+permalink: "/articles/2019-09-30-php-Connection-of-MySQL-Database"    
+date:   2019-09-30 11:00:00 +08:00      
 tags:      
     - "php"      
 comments: true      
